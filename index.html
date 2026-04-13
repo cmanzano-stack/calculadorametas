@@ -32,6 +32,14 @@ nav .nav-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
 .btn-primary:hover{background:#2563eb;border-color:#2563eb}
 .btn-success{background:var(--green);color:#fff;border-color:var(--green)}
 .btn-success:hover{background:#059669}
+.btn-warn{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn-warn:hover{background:#d97706}
+.save-bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--border);padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:50;transform:translateY(100%);transition:transform .2s}
+.save-bar.visible{transform:translateY(0)}
+.save-bar .sb-msg{font-size:13px;color:var(--amber-text);display:flex;align-items:center;gap:6px}
+.save-bar .sb-actions{display:flex;gap:8px}
+.saved-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1a18;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-size:13px;z-index:200;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none}
+.saved-toast.show{opacity:1;transform:translateY(0)}
 
 /* PAGES */
 .page{display:none;padding:1.75rem 2rem;max-width:960px;margin:0 auto}
@@ -256,10 +264,10 @@ tr.hilite td{background:var(--blue-bg)}
 <div class="page" id="page-config">
   <div class="card">
     <div class="ctitle">Información del programa</div>
-    <div class="config-row"><label>Nombre del programa</label><input type="text" id="cfgName" value="Programa de Incentivos 2025" onchange="calc()"></div>
-    <div class="config-row"><label>Empresa / Organización</label><input type="text" id="cfgOrg" value="Mercado Pago" onchange="calc()"></div>
+    <div class="config-row"><label>Nombre del programa</label><input type="text" id="cfgName" value="Programa de Incentivos 2025" oninput="markDirty()"></div>
+    <div class="config-row"><label>Empresa / Organización</label><input type="text" id="cfgOrg" value="Mercado Pago" oninput="markDirty()"></div>
     <div class="config-row"><label>Moneda de referencia</label>
-      <select id="cfgMoneda" onchange="calc()">
+      <select id="cfgMoneda" onchange="markDirty()">
         <option value="ARS">ARS — Peso argentino</option>
         <option value="USD">USD — Dólar</option>
         <option value="CLP">CLP — Peso chileno</option>
@@ -267,24 +275,37 @@ tr.hilite td{background:var(--blue-bg)}
         <option value="BRL">BRL — Real brasileño</option>
       </select>
     </div>
-    <div class="config-row"><label>Valor del punto (en moneda)</label><input type="number" id="cfgPtVal" value="1" min="0.01" step="0.01" onchange="calc()"></div>
+    <div class="config-row"><label>Valor del punto (en moneda)</label><input type="number" id="cfgPtVal" value="1" min="0.01" step="0.01" oninput="markDirty()"></div>
   </div>
 
   <div class="card">
     <div class="ctitle">Nombres de segmentos</div>
-    <div class="config-row"><label>Nombre segmento 1 (Top)</label><input type="text" id="seg0name" value="Top" onchange="renderAll()"></div>
-    <div class="config-row"><label>Nombre segmento 2 (Medio)</label><input type="text" id="seg1name" value="Medio" onchange="renderAll()"></div>
-    <div class="config-row"><label>Nombre segmento 3 (En desarrollo)</label><input type="text" id="seg2name" value="En desarrollo" onchange="renderAll()"></div>
+    <div class="config-row"><label>Nombre segmento 1 (Top)</label><input type="text" id="seg0name" value="Top" oninput="markDirty()"></div>
+    <div class="config-row"><label>Nombre segmento 2 (Medio)</label><input type="text" id="seg1name" value="Medio" oninput="markDirty()"></div>
+    <div class="config-row"><label>Nombre segmento 3 (En desarrollo)</label><input type="text" id="seg2name" value="En desarrollo" oninput="markDirty()"></div>
   </div>
 
   <div class="card" id="cfgMetasCard">
-    <div class="ctitle">Metas del área activa — <span id="cfgAreaLabel" style="color:var(--blue)"></span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.875rem">
+      <div class="ctitle" style="margin:0">Metas del área — <span id="cfgAreaLabel" style="color:var(--blue)"></span></div>
+      <div id="cfgAreaTabs" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+    </div>
     <div id="cfgMetas"></div>
     <div style="margin-top:.875rem">
       <button class="add-meta-btn" onclick="addMeta()">+ Agregar nueva meta</button>
     </div>
   </div>
+
+  <div class="save-bar" id="saveBar">
+    <div class="sb-msg">⚠️ Tenés cambios sin guardar</div>
+    <div class="sb-actions">
+      <button class="btn" onclick="discardChanges()">Descartar</button>
+      <button class="btn btn-primary" onclick="saveConfig()">✓ Guardar cambios</button>
+    </div>
+  </div>
 </div>
+
+<div class="saved-toast" id="savedToast">✓ Cambios guardados</div>
 
 <script>
 // ─── DATA ────────────────────────────────────────────────────────────────────
@@ -841,10 +862,59 @@ function renderBudget(){
   document.getElementById('budgetContent').innerHTML=html;
 }
 
+// ─── DIRTY STATE ─────────────────────────────────────────────────────────────
+let isDirty=false;
+let savedSnapshot=null;
+
+function markDirty(){
+  isDirty=true;
+  document.getElementById('saveBar').classList.add('visible');
+}
+
+function saveConfig(){
+  renderAll();
+  calc();
+  savedSnapshot=JSON.stringify(areaData);
+  isDirty=false;
+  document.getElementById('saveBar').classList.remove('visible');
+  const toast=document.getElementById('savedToast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2200);
+}
+
+function discardChanges(){
+  if(savedSnapshot) areaData=JSON.parse(savedSnapshot);
+  isDirty=false;
+  document.getElementById('saveBar').classList.remove('visible');
+  renderConfig();
+  renderMetas();
+  calc();
+}
+
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 function renderConfig(){
   const label=AREAS.find(a=>a.id===currentArea)?.label||'';
   document.getElementById('cfgAreaLabel').textContent=label;
+
+  const cfgTabs=document.getElementById('cfgAreaTabs');
+  if(cfgTabs){
+    cfgTabs.innerHTML='';
+    AREAS.forEach(a=>{
+      const btn=document.createElement('button');
+      btn.className='area-tab'+(a.id===currentArea?' on':'');
+      btn.textContent=a.label;
+      btn.style.cssText='font-size:11px;padding:4px 10px';
+      btn.onclick=()=>{
+        currentArea=a.id;
+        document.getElementById('cfgAreaLabel').textContent=a.label;
+        cfgTabs.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));
+        btn.classList.add('on');
+        renderConfig();
+      };
+      cfgTabs.appendChild(btn);
+    });
+  }
+
   const metas=areaData[currentArea].metas;
   const container=document.getElementById('cfgMetas');
   container.innerHTML='';
@@ -856,20 +926,21 @@ function renderConfig(){
     div.innerHTML=`
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem">
         <span class="dot" style="background:${color}"></span>
-        <input type="text" value="${meta.label}" style="flex:1;font-weight:500" onchange="meta.label=this.value;renderMetas();calc()">
+        <input type="text" value="${meta.label}" style="flex:1;font-weight:500" oninput="areaData[currentArea].metas[${mi}].label=this.value;markDirty()">
         <button class="remove-btn" onclick="removeMeta(${mi})">✕ Eliminar</button>
       </div>
       ${meta.segs.map((seg,si)=>`
         <div class="config-row" style="margin-bottom:.5rem">
           <label style="color:${SEG_COLORS[si]};min-width:130px">● ${['Top','Medio','En desarrollo'][si]}</label>
-          <input type="text" value="${seg.name}" style="flex:1;margin-right:8px" placeholder="Descripción del tramo" onchange="meta.segs[${si}].name=this.value;renderMetas()">
-          <input type="number" value="${seg.pts}" min="0" step="500" style="width:110px" onchange="meta.segs[${si}].pts=parseInt(this.value)||0;renderMetas();calc()">
+          <input type="text" value="${seg.name}" style="flex:1;margin-right:8px" placeholder="Descripción del tramo" oninput="areaData[currentArea].metas[${mi}].segs[${si}].name=this.value;markDirty()">
+          <input type="number" value="${seg.pts}" min="0" step="500" style="width:110px" oninput="areaData[currentArea].metas[${mi}].segs[${si}].pts=parseInt(this.value)||0;markDirty()">
           <span style="font-size:12px;color:var(--muted);margin-left:4px;white-space:nowrap">pts</span>
         </div>
       `).join('')}
     `;
     container.appendChild(div);
   });
+  if(!savedSnapshot) savedSnapshot=JSON.stringify(areaData);
 }
 
 function addMeta(){
@@ -882,18 +953,16 @@ function addMeta(){
       {name:'En desarrollo — descripción',pts:2000,ref:''},
     ]
   });
+  markDirty();
   renderConfig();
-  renderMetas();
-  calc();
 }
 
 function removeMeta(idx){
   if(areaData[currentArea].metas.length<=1){alert('Debe haber al menos una meta.');return;}
   if(!confirm('¿Eliminar esta meta?')) return;
   areaData[currentArea].metas.splice(idx,1);
+  markDirty();
   renderConfig();
-  renderMetas();
-  calc();
 }
 
 // ─── EXPORT CSV ───────────────────────────────────────────────────────────────
