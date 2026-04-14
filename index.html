@@ -487,6 +487,12 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 <div class="toast" id="toast"></div>
 
 <script>
+// ── PRE-INIT DECLARATIONS (must be before renderAll) ──────────────────────
+const IS_CLIENT = false;
+let _saveTimer = null;
+let currentVar = 'low';
+const VAR_MAP = {low:{up:5,down:5}, medium:{up:15,down:15}, high:{up:25,down:25}};
+// ─────────────────────────────────────────────────────────────────────────
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const SEG_COLORS=['#FA345E','#065F46','#f59e0b'];
 const META_COLORS=['#FA345E','#065F46','#f59e0b','#8b5cf6','#06b6d4','#ec4899','#ef4444','#3b82f6'];
@@ -664,7 +670,8 @@ function selectStage(stage){
   // Update label
   const labels = {onboarding:'🌱 Onboarding', growth:'📈 Crecimiento', alto:'🏆 Alto rendimiento'};
   document.getElementById('stageLabelValue').textContent = labels[stage] || stage;
-  // Enable apply button (only if different from loaded)
+  // Show action row and enable/disable apply button
+  document.getElementById('stageActionRow')?.classList.add('visible');
   const applyBtn = document.getElementById('stageApplyBtn');
   applyBtn.disabled = (stage === loadedStage);
   applyBtn.textContent = stage === loadedStage ? '✓ Ya cargado' : 'Cargar en calculadora →';
@@ -1028,7 +1035,7 @@ function calc(){
     let mt=0;
     const showSegs=currentMode==='dicotomico'?[0]:currentMode==='umbral'?[0,1]:[0,1,2];
     if(meta.igual){
-      const pts=parseInt(document.getElementById('pts_'+meta.id+'_all')?.value)||meta.segs[0]?.pts||0;
+      var ptsEl=document.getElementById('pts_'+meta.id+'_all');var pts=ptsEl?parseInt(ptsEl.value)||0:(meta.segs[0]?meta.segs[0].pts||0:0);
       const c=pts*total;mt+=c;segTotals[0]+=c;
     } else {
       showSegs.forEach(si=>{const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||meta.segs[si]?.pts||0;const c=pts*segs[si];mt+=c;segTotals[si]+=c;});
@@ -1036,7 +1043,7 @@ function calc(){
     grand+=mt;barData.push({label:meta.label,total:mt,color:META_COLORS[mi%META_COLORS.length]});
   });
   document.getElementById('heroNum').textContent=fmt(grand)+' pts';
-  saveSession();
+  if(typeof saveSession==='function')saveSession();
   const names=getSegNames();
   const mobUp=parseInt(document.getElementById('sUp')?.value||5);
   const mobDown=parseInt(document.getElementById('sDown')?.value||5);
@@ -1345,7 +1352,6 @@ function renderAll(){
 
 
 renderAll();
-const IS_CLIENT = false;
 
 // ── QUICK DOT ──────────────────────────────────────────────────────────────
 function quickDot(n){
@@ -1354,8 +1360,6 @@ function quickDot(n){
 }
 
 // ── VARIABILITY ────────────────────────────────────────────────────────────
-let currentVar='low';
-const VAR_MAP={low:{up:5,down:5},medium:{up:15,down:15},high:{up:25,down:25}};
 function setVar(level){
   currentVar=level;
   document.querySelectorAll('.var-btn').forEach(b=>b.classList.remove('active'));
@@ -1379,7 +1383,6 @@ function toggleMetaTipo(metaId,isIgual){
 }
 
 // ── SESSION SAVE ────────────────────────────────────────────────────────────
-let _saveTimer=null;
 function saveSession(){
   clearTimeout(_saveTimer);
   _saveTimer=setTimeout(()=>{
@@ -1388,6 +1391,7 @@ function saveSession(){
       const session={
         v:3,ts:Date.now(),
         area:currentArea,mode:currentMode,varLevel:currentVar,
+        selectedStage:selectedStage,loadedStage:loadedStage,
         dotacion:parseInt(document.getElementById('sTot')?.value)||200,
         metas:JSON.parse(JSON.stringify(areaData)),
         segNames:[
@@ -1441,6 +1445,24 @@ function loadAndRestoreSession(){
       if(s.cfgOrg){const el=document.getElementById('cfgOrg'+segSuffix);if(el)el.value=s.cfgOrg;}
       if(s.cfgName){const el=document.getElementById('cfgName'+segSuffix);if(el)el.value=s.cfgName;}
       if(s.cfgMoneda){const el=document.getElementById('cfgMoneda'+segSuffix);if(el)el.value=s.cfgMoneda;}
+      // Restore stage selection
+      if(s.selectedStage){
+        setTimeout(function(){
+          selectStage(s.selectedStage);
+          if(s.loadedStage&&s.loadedStage===s.selectedStage){
+            loadedStage=s.loadedStage;
+            var applyBtn=document.getElementById('stageApplyBtn');
+            if(applyBtn){applyBtn.disabled=true;applyBtn.textContent='Ya cargado';}
+            var stageLabels={onboarding:'Onboarding',growth:'Crecimiento',alto:'Alto rendimiento'};
+            var badge=document.getElementById('stageLoadedBadge');
+            if(badge){badge.style.display='inline-flex';badge.textContent=(stageLabels[s.loadedStage]||s.loadedStage)+' cargado';}
+            var resetBtn=document.getElementById('stageResetBtn');
+            if(resetBtn)resetBtn.style.display='block';
+            var ar=document.getElementById('stageActionRow');
+            if(ar)ar.classList.add('visible');
+          }
+        },200);
+      }
     }
   }catch(e){console.warn('loadSession error',e);}
 }
