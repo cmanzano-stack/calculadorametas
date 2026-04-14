@@ -150,6 +150,16 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 .toast.show{opacity:1;transform:translateY(0)}
 /* FLUJO BADGE */
 .flujo-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(6,95,70,.1);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+.mode-banner{border-radius:10px;padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid;transition:all .3s}
+.mode-banner.segmentado{background:rgba(250,52,94,.06);border-color:rgba(250,52,94,.2)}
+.mode-banner.dicotomico{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.3)}
+.mode-banner.umbral{background:rgba(6,95,70,.07);border-color:rgba(6,95,70,.2)}
+.mb-left{display:flex;align-items:center;gap:10px}
+.mb-icon{font-size:20px}
+.mb-title{font-size:13px;font-weight:800}
+.mb-desc{font-size:11px;color:var(--muted);margin-top:1px}
+.mb-segs{display:flex;gap:6px;flex-wrap:wrap}
+.meta-disabled-mode{font-size:11px;color:var(--muted);padding:6px 0;display:flex;align-items:center;gap:6px;font-style:italic}
 /* DOTACIÓN TABLE */
 .dot-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:.5rem}
 .dot-table th{padding:6px 8px;background:var(--light);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
@@ -231,6 +241,7 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 
   <div class="card">
     <div class="ctitle">Metas activas — <span id="areaLabelCalc" style="color:var(--primary)"></span></div>
+    <div id="modeBanner"></div>
     <div id="metasContainer"></div>
     <div style="margin-top:.5rem"><button class="add-meta-btn" onclick="showPage('config')">+ Agregar o editar metas en Configuración</button></div>
   </div>
@@ -306,7 +317,7 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
           <option value="ARS">ARS — Peso argentino (Argentina)</option>
           <option value="BOB">BOB — Boliviano (Bolivia)</option>
           <option value="BRL">BRL — Real brasileño (Brasil)</option>
-          <option value="CLP">CLP — Peso chileno (Chile)</option>
+          <option value="CLP" selected>CLP — Peso chileno (Chile)</option>
           <option value="COP">COP — Peso colombiano (Colombia)</option>
           <option value="PEN">PEN — Sol (Perú)</option>
           <option value="PYG">PYG — Guaraní (Paraguay)</option>
@@ -517,7 +528,7 @@ let isDirty=false,savedSnapshot=null;
 let dotacion={total:200,top:20,mid:50,umbral:0};
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
-function fmt(n){return Math.round(n).toLocaleString('es-AR')}
+function fmt(n){return Math.round(n).toLocaleString('es-CL')}
 function getTotal(){return parseInt(document.getElementById('sTot')?.value)||200}
 function getSegNames(){return[document.getElementById('seg0name')?.value||'Top',document.getElementById('seg1name')?.value||'Medio',document.getElementById('seg2name')?.value||'En desarrollo'];}
 
@@ -564,6 +575,7 @@ function setMode(mode){
   document.querySelectorAll('.mode-tab[id^="modeBtn-"]').forEach(b=>b.classList.remove('on'));
   document.getElementById('modeBtn-'+mode)?.classList.add('on');
   renderModeInputs();
+  renderMetas();
   calc();
 }
 
@@ -634,11 +646,48 @@ function renderSegCounts(){
   document.getElementById('mobilityNote').innerHTML=`<strong>Movilidad mensual esperada:</strong> ~${fmt(mobUp)} personas podrían subir de segmento · ~${fmt(mobDown)} podrían bajar. Esto puede afectar el presupuesto entre <strong>-${mobilityDown}%</strong> y <strong>+${mobility}%</strong> mes a mes.`;
 }
 
+function getModeInfo(){
+  const M={
+    segmentado:{icon:'🎯',title:'Modelo por segmentos',desc:'Cada meta premia 3 grupos: Top, Medio y En desarrollo — con puntos distintos para cada uno.',color:'segmentado'},
+    dicotomico:{icon:'⚡',title:'Modelo dicotómico',desc:'Solo quien cumple la meta gana puntos. Sin rangos intermedios — todo o nada.',color:'dicotomico'},
+    umbral:{icon:'📊',title:'Modelo por umbral mínimo',desc:'Solo quienes superan el umbral puntúan. Entre ellos se distingue Top y Medio.',color:'umbral'},
+  };
+  return M[currentMode]||M.segmentado;
+}
+
 function renderMetas(){
   const metas=areaData[currentArea].metas;
   const names=getSegNames();
   if(document.getElementById('areaLabelCalc')) document.getElementById('areaLabelCalc').textContent=AREAS.find(a=>a.id===currentArea)?.label||'';
+
+  // Mode banner
+  const mi2=getModeInfo();
+  const banner=document.getElementById('modeBanner');
+  if(banner){
+    const segPills={
+      segmentado:`<span style="background:rgba(250,52,94,.12);color:var(--primary-dark);padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">${names[0]}</span>
+                  <span style="background:rgba(6,95,70,.1);color:var(--green);padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">${names[1]}</span>
+                  <span style="background:rgba(245,158,11,.12);color:#b45309;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">${names[2]}</span>`,
+      dicotomico:`<span style="background:rgba(245,158,11,.12);color:#b45309;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">✅ ${names[0]} — gana</span>
+                  <span style="background:#f3f4f6;color:#6b7280;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">❌ No califica — 0 pts</span>`,
+      umbral:`<span style="background:rgba(250,52,94,.12);color:var(--primary-dark);padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">${names[0]}</span>
+              <span style="background:rgba(6,95,70,.1);color:var(--green);padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">${names[1]}</span>
+              <span style="background:#f3f4f6;color:#6b7280;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700">⬇ Bajo umbral — 0 pts</span>`,
+    };
+    banner.innerHTML=`<div class="mode-banner ${mi2.color}">
+      <div class="mb-left"><span class="mb-icon">${mi2.icon}</span>
+        <div><div class="mb-title">${mi2.title}</div><div class="mb-desc">${mi2.desc}</div></div>
+      </div>
+      <div class="mb-segs">${segPills[currentMode]||''}</div>
+    </div>`;
+  }
+
   const container=document.getElementById('metasContainer');container.innerHTML='';
+  const disabledHint={
+    segmentado:'Activar para ver los 3 segmentos y sus puntos',
+    dicotomico:'Activar para definir los puntos del grupo que califica',
+    umbral:'Activar para ver los segmentos sobre el umbral',
+  };
   metas.forEach((meta,mi)=>{
     const color=META_COLORS[mi%META_COLORS.length];
     const div=document.createElement('div');div.className='meta-block';
@@ -647,13 +696,17 @@ function renderMetas(){
       <label class="tog"><input type="checkbox" id="tog_${meta.id}" ${meta.on?'checked':''}><span class="tslider"></span></label>`;
     div.appendChild(header);
     const body=document.createElement('div');body.id='mbody_'+meta.id;
-    body.innerHTML=meta.on?renderMetaBody(meta,names):`<div class="meta-disabled">Desactivada — activá el switch para incluirla.</div>`;
+    body.innerHTML=meta.on
+      ? renderMetaBody(meta,names)
+      : `<div class="meta-disabled-mode">💤 ${disabledHint[currentMode]||'Desactivada — activar para incluir'}</div>`;
     div.appendChild(body);
     if(mi<metas.length-1){const d=document.createElement('div');d.className='divider';div.appendChild(d);}
     container.appendChild(div);
     header.querySelector('input[type=checkbox]').addEventListener('change',function(){
       meta.on=this.checked;
-      body.innerHTML=meta.on?renderMetaBody(meta,names):`<div class="meta-disabled">Desactivada — activá el switch para incluirla.</div>`;
+      body.innerHTML=meta.on
+        ? renderMetaBody(meta,getSegNames())
+        : `<div class="meta-disabled-mode">💤 ${disabledHint[currentMode]||'Desactivada — activar para incluir'}</div>`;
       calc();
     });
   });
@@ -811,10 +864,10 @@ function renderBudget(){
   const org=document.getElementById('cfgOrg')?.value||'';
   const prog=document.getElementById('cfgName')?.value||'';
   const ptVal=parseFloat(document.getElementById('cfgPtVal')?.value)||1;
-  const moneda=document.getElementById('cfgMoneda')?.value||'ARS';
+  const moneda=document.getElementById('cfgMoneda')?.value||'CLP';
   const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
   const names=getSegNames();
-  const today=new Date().toLocaleDateString('es-AR',{year:'numeric',month:'long',day:'numeric'});
+  const today=new Date().toLocaleDateString('es-CL',{year:'numeric',month:'long',day:'numeric'});
   document.getElementById('bTitle').textContent=prog||'Presupuesto mensual';
   document.getElementById('bMeta').textContent=`${org} · ${AREAS.find(a=>a.id===currentArea)?.label} · ${today}`;
   const metas=areaData[currentArea].metas.filter(m=>m.on);
@@ -901,11 +954,11 @@ function removeMeta(idx){
 function exportCSV(){
   const org=document.getElementById('cfgOrg')?.value||'';
   const prog=document.getElementById('cfgName')?.value||'';
-  const moneda=document.getElementById('cfgMoneda')?.value||'ARS';
+  const moneda=document.getElementById('cfgMoneda')?.value||'CLP';
   const ptVal=parseFloat(document.getElementById('cfgPtVal')?.value)||1;
   const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
   const names=getSegNames();const area=AREAS.find(a=>a.id===currentArea)?.label||currentArea;
-  const today=new Date().toLocaleDateString('es-AR');
+  const today=new Date().toLocaleDateString('es-CL');
   const metas=areaData[currentArea].metas.filter(m=>m.on);
   const mobUp=parseInt(document.getElementById('sUp')?.value||5);
   const mobDown=parseInt(document.getElementById('sDown')?.value||5);
