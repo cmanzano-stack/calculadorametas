@@ -151,27 +151,30 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 /* FLUJO BADGE */
 .flujo-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(6,95,70,.1);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
 /* ── STAGE SELECTOR ─────────────────────────────────────────────────────── */
-.stage-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
-.stage-label-block{flex-shrink:0}
-.stage-label-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:4px}
-.stage-label-value{font-size:14px;font-weight:800;color:var(--text)}
-.stage-cards{display:flex;gap:10px;flex:1;flex-wrap:wrap}
-.stage-card{flex:1;min-width:140px;border:2px solid var(--border);border-radius:10px;padding:.875rem 1rem;cursor:pointer;transition:all .2s;background:var(--card);position:relative;overflow:hidden}
-.stage-card:hover{border-color:var(--primary);transform:translateY(-1px);box-shadow:0 4px 12px rgba(250,52,94,.1)}
+.stage-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.5rem;margin-bottom:1rem}
+.stage-top-row{display:flex;align-items:center;gap:1.25rem;flex-wrap:nowrap}
+.stage-label-block{flex-shrink:0;min-width:100px}
+.stage-label-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:3px}
+.stage-label-value{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap}
+.stage-cards{display:flex;gap:8px;flex:1;overflow:hidden}
+.stage-card{flex:1;min-width:0;border:2px solid var(--border);border-radius:10px;padding:.75rem 1rem;cursor:pointer;transition:all .2s;background:var(--card);position:relative;overflow:hidden}
+.stage-card:hover{border-color:var(--primary);box-shadow:0 2px 8px rgba(250,52,94,.1)}
 .stage-card.active{border-color:var(--primary);background:var(--primary-light)}
 .stage-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--primary)}
-.sc-icon{font-size:22px;margin-bottom:6px}
-.sc-name{font-size:13px;font-weight:800;margin-bottom:3px;color:var(--text)}
-.sc-desc{font-size:11px;color:var(--muted);line-height:1.5}
-.sc-badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;text-transform:uppercase;letter-spacing:.06em}
+.sc-icon{font-size:18px;margin-bottom:4px}
+.sc-name{font-size:12px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-desc{font-size:11px;color:var(--muted);line-height:1.4;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sc-badge{position:absolute;top:6px;right:6px;font-size:9px;font-weight:800;padding:2px 5px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em}
 .sc-badge-active{background:var(--primary);color:#fff}
-.stage-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.stage-apply-btn{padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:700;background:var(--primary);color:#fff;border:none;font-family:'Montserrat',sans-serif;transition:all .15s;white-space:nowrap}
+/* Botones de acción — fila separada abajo, solo visibles cuando hay selección */
+.stage-action-row{display:none;align-items:center;justify-content:flex-end;gap:8px;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--light)}
+.stage-action-row.visible{display:flex}
+.stage-apply-btn{padding:7px 18px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:700;background:var(--primary);color:#fff;border:none;font-family:'Montserrat',sans-serif;transition:all .15s;white-space:nowrap}
 .stage-apply-btn:hover{background:var(--primary-dark)}
 .stage-apply-btn:disabled{background:#e5e7eb;color:#9ca3af;cursor:not-allowed}
-.stage-reset-btn{padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:600;background:transparent;color:var(--muted);border:1px solid var(--border);font-family:'Montserrat',sans-serif;transition:all .15s}
+.stage-reset-btn{padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:600;background:transparent;color:var(--muted);border:1px solid var(--border);font-family:'Montserrat',sans-serif;transition:all .15s;white-space:nowrap}
 .stage-reset-btn:hover{border-color:var(--primary);color:var(--primary)}
-.stage-loaded-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-text);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
+.stage-loaded-badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-text);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-right:auto}
 .metas-modified-note{background:var(--amber-bg);border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:11px;color:var(--amber-text);font-weight:600;margin-bottom:.75rem;display:none;align-items:center;gap:6px}
 .mode-banner{border-radius:10px;padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid;transition:all .3s}
 .mode-banner.segmentado{background:rgba(250,52,94,.06);border-color:rgba(250,52,94,.2)}
@@ -200,9 +203,45 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
   body{background:#fff}
   .hero,.grand-box{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+
+/* ── QUICK DOT BUTTONS ─────────────────────────────────────── */
+.quick-dot-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;background:var(--light);border:1px solid var(--border);color:var(--muted);font-family:'Montserrat',sans-serif;transition:all .15s}
+.quick-dot-btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+/* ── VARIABILITY BUTTONS ───────────────────────────────────── */
+.var-btn{flex:1;padding:8px 6px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:var(--light);border:1px solid var(--border);color:var(--muted);font-family:'Montserrat',sans-serif;transition:all .15s;text-align:center;line-height:1.3}
+.var-btn:hover{border-color:var(--primary);color:var(--primary)}
+.var-btn.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary-dark)}
+/* ── IGUALITARIA META BLOCK ────────────────────────────────── */
+.igual-block{background:#f8fafc;border:2px solid var(--border);border-radius:10px;padding:1rem;margin-top:8px}
+.igual-toggle{display:flex;align-items:center;gap:10px;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.igual-toggle-label{font-size:12px;font-weight:700;color:var(--text);flex:1}
+.igual-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(6,95,70,.1);color:var(--green);font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.06em}
+.igual-input-wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.igual-pts-input{width:110px;font-size:20px;font-weight:800;color:var(--primary);border:2px solid var(--border2);border-radius:8px;padding:6px 10px;text-align:center;font-family:'Montserrat',sans-serif}
+.igual-pts-input:focus{border-color:var(--primary);outline:none}
+.igual-result{font-size:12px;color:var(--muted);line-height:1.6}
+.seg-type-toggle{display:flex;gap:6px;margin-bottom:8px}
+.seg-type-btn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);font-family:'Montserrat',sans-serif;transition:all .15s}
+.seg-type-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+/* ── SAVE BADGE ────────────────────────────────────────────── */
+.save-badge{font-size:11px;color:var(--muted);font-weight:600;transition:opacity .5s;white-space:nowrap}
+/* ── RESTORE BANNER ────────────────────────────────────────── */
+.restore-banner{background:var(--green-bg);border-bottom:1px solid var(--green-border);padding:.625rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--green-text)}
+.restore-banner strong{font-weight:700}
+.restore-actions{display:flex;gap:8px}
+.restore-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;border:none;transition:all .15s}
+.restore-yes{background:var(--green);color:#fff}
+.restore-no{background:transparent;color:var(--green-text);border:1px solid var(--green-border)!important;border-radius:6px!important}
 </style>
 </head>
 <body>
+<div class="restore-banner" id="restoreBanner" style="display:none">
+  <div>✅ <strong>Sesión anterior restaurada.</strong> Última vez modificado: <span id="restoreTs">—</span></div>
+  <div class="restore-actions">
+    <button class="restore-btn restore-yes" onclick="document.getElementById('restoreBanner').remove()">Usar esta sesión</button>
+    <button class="restore-btn restore-no"  onclick="discardSession()">Empezar de cero</button>
+  </div>
+</div>
 
 <nav>
   <div class="brand">
@@ -216,6 +255,7 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
     <button class="nav-tab" onclick="showPage('config')">Configuración</button>
   </div>
   <div class="nav-actions">
+    <span class="save-badge" id="saveBadge" style="opacity:.5">💾 Sin cambios</span>
     <button class="btn btn-green" onclick="exportCSV()">↓ Exportar CSV</button>
     <button class="btn btn-primary" onclick="window.print()">🖨 Imprimir</button>
   </div>
@@ -226,37 +266,33 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 
   <!-- STAGE SELECTOR -->
   <div class="stage-bar" id="stageBar">
-    <div class="stage-label-block">
-      <div class="stage-label-title">Etapa del programa</div>
-      <div class="stage-label-value" id="stageLabelValue">Sin seleccionar</div>
+    <div class="stage-top-row">
+      <div class="stage-label-block">
+        <div class="stage-label-title">Etapa del programa</div>
+        <div class="stage-label-value" id="stageLabelValue">Sin seleccionar</div>
+      </div>
+      <div class="stage-cards" id="stageCards">
+        <div class="stage-card" id="stageCard-onboarding" onclick="selectStage('onboarding')">
+          <div class="sc-icon">🌱</div>
+          <div class="sc-name">Onboarding</div>
+          <div class="sc-desc">Primeras semanas. Activación: logins, capacitaciones, primeras transacciones.</div>
+        </div>
+        <div class="stage-card" id="stageCard-growth" onclick="selectStage('growth')">
+          <div class="sc-icon">📈</div>
+          <div class="sc-name">Crecimiento</div>
+          <div class="sc-desc">Operación plena. Metas de desempeño real: ventas, KPIs, indicadores del negocio.</div>
+        </div>
+        <div class="stage-card" id="stageCard-alto" onclick="selectStage('alto')">
+          <div class="sc-icon">🏆</div>
+          <div class="sc-name">Alto rendimiento</div>
+          <div class="sc-desc">Programa maduro. Metas exigentes, milestones de antigüedad, reconocimiento élite.</div>
+        </div>
+      </div>
     </div>
-    <div class="stage-cards" id="stageCards">
-      <div class="stage-card" id="stageCard-onboarding" onclick="selectStage('onboarding')">
-        <div class="sc-icon">🌱</div>
-        <div class="sc-name">Onboarding</div>
-        <div class="sc-desc">Primeras semanas. Metas de activación: logins, capacitaciones, primeras transacciones.</div>
-      </div>
-      <div class="stage-card" id="stageCard-growth" onclick="selectStage('growth')">
-        <div class="sc-icon">📈</div>
-        <div class="sc-name">Crecimiento</div>
-        <div class="sc-desc">Operación plena. Metas de desempeño real: ventas, KPIs, indicadores del negocio.</div>
-      </div>
-      <div class="stage-card" id="stageCard-alto" onclick="selectStage('alto')">
-        <div class="sc-icon">🏆</div>
-        <div class="sc-name">Alto rendimiento</div>
-        <div class="sc-desc">Programa maduro. Metas exigentes, milestones de antigüedad, reconocimiento élite.</div>
-      </div>
-    </div>
-    <div class="stage-actions">
-      <div id="stageLoadedBadge" style="display:none">
-        <span class="stage-loaded-badge" id="stageLoadedText">✓ Cargado</span>
-      </div>
-      <button class="stage-apply-btn" id="stageApplyBtn" onclick="applyStageToCalc()" disabled>
-        Cargar en calculadora →
-      </button>
-      <button class="stage-reset-btn" id="stageResetBtn" onclick="resetStage()" style="display:none">
-        ↺ Restaurar metas
-      </button>
+    <div class="stage-action-row" id="stageActionRow">
+      <span class="stage-loaded-badge" id="stageLoadedBadge" style="display:none" id="stageLoadedText">✓ Cargado</span>
+      <button class="stage-reset-btn" id="stageResetBtn" onclick="resetStage()" style="display:none">↺ Restaurar metas originales</button>
+      <button class="stage-apply-btn" id="stageApplyBtn" onclick="applyStageToCalc()" disabled>Cargar en calculadora →</button>
     </div>
   </div>
 
@@ -266,7 +302,22 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
     <div class="card" style="margin:0">
       <div class="ctitle">Dotación y segmentación</div>
       <label>Total de colaboradores</label>
-      <div class="row"><input type="range" id="sTot" min="10" max="3000" step="10" value="200"><span class="rval" id="sTotV">200</span></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.5rem">
+        <input type="number" id="sTot" min="1" value="200" step="10"
+          style="width:120px;font-size:22px;font-weight:800;color:var(--primary);border:2px solid var(--border2);border-radius:8px;padding:6px 10px;text-align:center;font-family:'Montserrat',sans-serif"
+          oninput="document.getElementById('sTotV').textContent=this.value;calc();saveSession()">
+        <span style="font-size:13px;color:var(--muted);font-weight:500">personas</span>
+        <span id="sTotV" style="display:none">200</span>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.25rem">
+        <button onclick="quickDot(50)"   class="quick-dot-btn">50</button>
+        <button onclick="quickDot(100)"  class="quick-dot-btn">100</button>
+        <button onclick="quickDot(200)"  class="quick-dot-btn">200</button>
+        <button onclick="quickDot(500)"  class="quick-dot-btn">500</button>
+        <button onclick="quickDot(1000)" class="quick-dot-btn">1.000</button>
+        <button onclick="quickDot(5000)" class="quick-dot-btn">5.000</button>
+        <button onclick="quickDot(10000)"class="quick-dot-btn">10.000</button>
+      </div>
 
       <div class="divider"></div>
       <div class="ctitle">Modo de distribución</div>
@@ -288,14 +339,14 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
       <div id="segCounts"></div>
       <div class="divider"></div>
       <div class="ctitle">Variabilidad mensual</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">
-        Los colaboradores pueden moverse entre segmentos cada mes. Ajusta la movilidad esperada:
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.6">¿Cuánta variación esperas en el equipo mes a mes? Esto determina el <strong>rango mínimo y máximo</strong> del presupuesto — refleja que algunas personas mejoran o bajan su desempeño cada mes.</div>
+      <div style="display:flex;gap:7px;margin-bottom:8px">
+        <button class="var-btn active" id="varBtn-low"    onclick="setVar('low')"   >Estable<span style="font-size:10px;display:block;margin-top:2px;opacity:.75">±5% del total</span></button>
+        <button class="var-btn"        id="varBtn-medium" onclick="setVar('medium')">Normal <span style="font-size:10px;display:block;margin-top:2px;opacity:.75">±15% del total</span></button>
+        <button class="var-btn"        id="varBtn-high"   onclick="setVar('high')"  >Alta   <span style="font-size:10px;display:block;margin-top:2px;opacity:.75">±25% del total</span></button>
       </div>
-      <label>% que sube de segmento/mes</label>
-      <div class="row"><input type="range" id="sUp" min="0" max="30" step="1" value="5"><span class="rval" id="sUpV">5%</span></div>
-      <label>% que baja de segmento/mes</label>
-      <div class="row"><input type="range" id="sDown" min="0" max="30" step="1" value="5"><span class="rval" id="sDownV">5%</span></div>
-      <div id="mobilityNote" style="font-size:11px;color:var(--muted);background:var(--light);border-radius:7px;padding:8px;margin-top:6px"></div>
+      <input type="hidden" id="sUp" value="5"><input type="hidden" id="sDown" value="5">
+      <div id="mobilityNote" style="font-size:11px;color:var(--muted);background:var(--light);border-radius:7px;padding:8px;margin-top:2px"></div>
     </div>
   </div>
 
@@ -486,7 +537,7 @@ const BASE_PRESETS={
         {name:'Top — ≥95% retención',pts:10000,ref:''},
         {name:'Medio — 85 a 94%',pts:5000,ref:''},
         {name:'En desarrollo — 70 a 84%',pts:2000,ref:''}]},
-      {id:'m6',label:'Capacitación / Entrenamiento',on:true,flujo:false,segs:[
+      {id:'m6',label:'Capacitación / Entrenamiento',on:true,flujo:false,igual:true,segs:[
         {name:'Sobresaliente + bonus',pts:5000,ref:'100 puntos + bonus'},
         {name:'Aprobado',pts:3000,ref:'75–99 puntos'},
         {name:'Completado',pts:1000,ref:'Solo completar'}]},
@@ -501,7 +552,7 @@ const BASE_PRESETS={
     metas:[
       {id:'m1',label:'Entregas a tiempo',on:true,flujo:false,segs:[{name:'Top — ≥99%',pts:20000,ref:''},{name:'Medio — 95 a 98%',pts:10000,ref:''},{name:'En desarrollo — 90 a 94%',pts:3000,ref:''}]},
       {id:'m2',label:'Incidencias y daños',on:true,flujo:false,segs:[{name:'Top — <0.5%',pts:15000,ref:''},{name:'Medio — 0.5 a 1.5%',pts:7000,ref:''},{name:'En desarrollo — 1.5 a 3%',pts:2000,ref:''}]},
-      {id:'m3',label:'Capacitación y seguridad',on:true,flujo:false,segs:[{name:'Con distinción',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m3',label:'Capacitación y seguridad',on:true,flujo:false,igual:true,segs:[{name:'Con distinción',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
       {id:'m4',label:'Optimización de ruta',on:false,flujo:false,segs:[{name:'Top — >15% ahorro',pts:12000,ref:''},{name:'Medio — 8 a 15%',pts:6000,ref:''},{name:'En desarrollo — 3 a 7%',pts:2000,ref:''}]},
       {id:'m5',label:'Días sin accidentes',on:false,flujo:false,segs:[{name:'Top — 90 días',pts:10000,ref:''},{name:'Medio — 60 días',pts:5000,ref:''},{name:'En desarrollo — 30 días',pts:2000,ref:''}]},
     ],
@@ -516,7 +567,7 @@ const BASE_PRESETS={
       {id:'m1',label:'Meta ventas mensual',on:true,flujo:false,segs:[{name:'Top — ≥120% del objetivo',pts:22000,ref:''},{name:'Medio — 100 a 119%',pts:12000,ref:''},{name:'En desarrollo — 80 a 99%',pts:4000,ref:''}]},
       {id:'m2',label:'Ticket promedio',on:true,flujo:false,segs:[{name:'Top — ≥20% sobre objetivo',pts:15000,ref:''},{name:'Medio — hasta 19% sobre',pts:7000,ref:''},{name:'En desarrollo',pts:2500,ref:''}]},
       {id:'m3',label:'Cross-selling',on:true,flujo:false,segs:[{name:'Top — ≥3 productos/venta',pts:12000,ref:''},{name:'Medio — 2 prod/venta',pts:5000,ref:''},{name:'En desarrollo — 1.5',pts:2000,ref:''}]},
-      {id:'m4',label:'Capacitación',on:true,flujo:false,segs:[{name:'Con distinción',pts:4000,ref:''},{name:'Aprobado',pts:2500,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m4',label:'Capacitación',on:true,flujo:false,igual:true,segs:[{name:'Con distinción',pts:4000,ref:''},{name:'Aprobado',pts:2500,ref:''},{name:'Completado',pts:1000,ref:''}]},
       {id:'m5',label:'NPS del cliente',on:false,flujo:false,segs:[{name:'Top — ≥9',pts:10000,ref:''},{name:'Medio — 7 a 8',pts:5000,ref:''},{name:'En desarrollo — 5 a 6',pts:1500,ref:''}]},
     ],
     scenarios:{
@@ -544,7 +595,7 @@ const BASE_PRESETS={
       {id:'m1',label:'SLA y disponibilidad',on:true,flujo:false,segs:[{name:'Top — ≥99.9%',pts:20000,ref:''},{name:'Medio — 99 a 99.8%',pts:10000,ref:''},{name:'En desarrollo — 97 a 98.9%',pts:3000,ref:''}]},
       {id:'m2',label:'Bugs críticos resueltos',on:true,flujo:false,segs:[{name:'Top — ≥10/mes',pts:18000,ref:''},{name:'Medio — 5 a 9',pts:8000,ref:''},{name:'En desarrollo — 1 a 4',pts:3000,ref:''}]},
       {id:'m3',label:'Features entregadas a tiempo',on:true,flujo:false,segs:[{name:'Top — 100%',pts:15000,ref:''},{name:'Medio — 80 a 99%',pts:7000,ref:''},{name:'En desarrollo — 60 a 79%',pts:2500,ref:''}]},
-      {id:'m4',label:'Certificación técnica',on:true,flujo:false,segs:[{name:'Con distinción',pts:6000,ref:''},{name:'Aprobado',pts:3500,ref:''},{name:'Completado',pts:1500,ref:''}]},
+      {id:'m4',label:'Certificación técnica',on:true,flujo:false,igual:true,segs:[{name:'Con distinción',pts:6000,ref:''},{name:'Aprobado',pts:3500,ref:''},{name:'Completado',pts:1500,ref:''}]},
     ],
     scenarios:{
       onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Onboarding técnico',pts:[1500,1500,1500]},{label:'Primer deploy',pts:[2000,1500,1000]}],
@@ -557,7 +608,7 @@ const BASE_PRESETS={
       {id:'m1',label:'NPS del cliente',on:true,flujo:false,segs:[{name:'Top — ≥9',pts:20000,ref:''},{name:'Medio — 7 a 8',pts:10000,ref:''},{name:'En desarrollo — 5 a 6',pts:3000,ref:''}]},
       {id:'m2',label:'FCR — Resolución primer contacto',on:true,flujo:false,segs:[{name:'Top — ≥90%',pts:18000,ref:''},{name:'Medio — 75 a 89%',pts:8000,ref:''},{name:'En desarrollo — 60 a 74%',pts:2500,ref:''}]},
       {id:'m3',label:'Tiempo de primera respuesta',on:true,flujo:false,segs:[{name:'Top — <2 horas',pts:12000,ref:''},{name:'Medio — 2 a 6 horas',pts:6000,ref:''},{name:'En desarrollo — 6 a 24 hs',pts:2000,ref:''}]},
-      {id:'m4',label:'Capacitación',on:true,flujo:false,segs:[{name:'Con distinción',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m4',label:'Capacitación',on:true,flujo:false,igual:true,segs:[{name:'Con distinción',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
     ],
     scenarios:{
       onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Primer ticket cerrado',pts:[500,500,500]},{label:'Capacitación inicial',pts:[1000,1000,1000]}],
@@ -569,7 +620,7 @@ const BASE_PRESETS={
     metas:[
       {id:'m1',label:'Eficiencia operativa',on:true,flujo:false,segs:[{name:'Top — >20% mejora',pts:18000,ref:''},{name:'Medio — 10 a 19%',pts:9000,ref:''},{name:'En desarrollo — 3 a 9%',pts:3000,ref:''}]},
       {id:'m2',label:'Cumplimiento de procesos',on:true,flujo:false,segs:[{name:'Top — 100%',pts:15000,ref:''},{name:'Medio — 90 a 99%',pts:7000,ref:''},{name:'En desarrollo — 75 a 89%',pts:2500,ref:''}]},
-      {id:'m3',label:'Capacitación',on:true,flujo:false,segs:[{name:'Con distinción',pts:4000,ref:''},{name:'Aprobado',pts:2500,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m3',label:'Capacitación',on:true,flujo:false,igual:true,segs:[{name:'Con distinción',pts:4000,ref:''},{name:'Aprobado',pts:2500,ref:''},{name:'Completado',pts:1000,ref:''}]},
     ],
     scenarios:{
       onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Inducción ops',pts:[1000,1000,1000]},{label:'Primer proceso completado',pts:[500,500,500]}],
@@ -636,11 +687,13 @@ function applyStageToCalc(){
   // Map scenario rows into metas format
   // Each scenario row: {label, pts:[top,mid,dev]}
   const names = getSegNames();
+  const IGUAL_LABELS=['Primer login plataforma','Primer login','Primera capacitación','Encuesta bienvenida','Primera venta registrada','Primera venta','Primer cruce de boletas','Inducción completada','Primera entrega','Primer deploy','Primer ticket cerrado','Capacitación inicial','Primer proceso completado','Inducción ops','Onboarding técnico','Primera gestión','Módulo negociación'];
   const newMetas = scenRows.map((row, i) => ({
     id: 'scen_'+stage+'_'+i,
     label: row.label,
     on: true,
     flujo: false,
+    igual: stage==='onboarding' || IGUAL_LABELS.includes(row.label),
     segs: [
       {name: names[0]+' — meta', pts: row.pts[0], ref:''},
       {name: names[1]+' — meta', pts: row.pts[1], ref:''},
@@ -657,7 +710,7 @@ function applyStageToCalc(){
   document.getElementById('stageApplyBtn').textContent = '✓ Ya cargado';
   document.getElementById('stageLoadedBadge').style.display = 'block';
   const stageNames = {onboarding:'Onboarding', growth:'Crecimiento', alto:'Alto rendimiento'};
-  document.getElementById('stageLoadedText').textContent = '✓ '+stageNames[stage]+' cargado';
+  document.getElementById('stageLoadedBadge').textContent = '✓ '+stageNames[stage]+' cargado';
   document.getElementById('stageResetBtn').style.display = 'block';
   // Show modified note (hidden until user edits)
   const note = document.getElementById('metasModifiedNote');
@@ -706,6 +759,7 @@ function resetStage(){
   document.getElementById('stageLoadedBadge').style.display = 'none';
   document.getElementById('stageResetBtn').style.display = 'none';
   document.getElementById('stageLabelValue').textContent = 'Sin seleccionar';
+  document.getElementById('stageActionRow')?.classList.remove('visible');
   document.getElementById('metasModifiedNote').style.display = 'none';
   // Clear active cards
   ['onboarding','growth','alto'].forEach(s => {
@@ -909,46 +963,80 @@ function renderMetas(){
 }
 
 function renderMetaBody(meta,names){
+  const total=getTotal();
+  // ── Toggle: Igualitaria / Por segmento ──────────────────────────────────
+  const isIgual = meta.igual === true;
+  const typeToggle = `<div class="seg-type-toggle">
+    <button class="seg-type-btn ${isIgual?'active':''}" onclick="toggleMetaTipo('${meta.id}',true)">👥 Todos igual</button>
+    <button class="seg-type-btn ${!isIgual?'active':''}" onclick="toggleMetaTipo('${meta.id}',false)">📊 Por segmento</button>
+  </div>`;
+
+  // ── IGUALITARIA: un solo campo, toda la dotación ─────────────────────────
+  if(isIgual){
+    const pts = meta.segs[0]?.pts||500;
+    return`${typeToggle}<div class="igual-block">
+      <div class="igual-input-wrap">
+        <input class="igual-pts-input" type="number" id="pts_${meta.id}_all"
+          value="${pts}" min="0" step="100"
+          onchange="(function(){const v=parseInt(this.value)||0;const m=areaData[currentArea].metas.find(m=>m.id==='${meta.id}');if(m)m.segs.forEach(s=>s.pts=v);calc();saveSession();}).call(this)">
+        <div class="igual-result">
+          <strong>pts por persona</strong><br>
+          Todos los que completan la acción ganan lo mismo<br>
+          <span style="color:var(--primary);font-weight:700">${fmt(pts*total)} pts</span>
+          <span style="color:var(--muted)"> si los ${fmt(total)} participan</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── POR SEGMENTO ─────────────────────────────────────────────────────────
   if(currentMode==='dicotomico'){
-    return`<div class="seg-inputs" style="grid-template-columns:1fr 1fr">
+    return`${typeToggle}<div class="seg-inputs" style="grid-template-columns:1fr 1fr">
       <div class="seg-block">
         <div class="sb-badge" style="color:${SEG_COLORS[0]}">● ${names[0]} — califica</div>
         <div class="sb-name">${meta.segs[0].name}</div>
         <label>Puntos al calificar</label>
-        <input type="number" id="pts_${meta.id}_0" value="${meta.segs[0].pts}" min="0" step="500" onchange="areaData[currentArea].metas.find(m=>m.id==='${meta.id}').segs[0].pts=parseInt(this.value)||0;calc()">
+        <input type="number" id="pts_${meta.id}_0" value="${meta.segs[0].pts}" min="0" step="500" onchange="areaData[currentArea].metas.find(m=>m.id==='${meta.id}').segs[0].pts=parseInt(this.value)||0;calc();saveSession()">
         ${meta.segs[0].ref?`<div class="sb-ref">${meta.segs[0].ref}</div>`:''}
       </div>
-      <div class="seg-block" style="opacity:.5">
+      <div class="seg-block" style="opacity:.45">
         <div class="sb-badge" style="color:#999">● No califica</div>
-        <div class="sb-name" style="color:#aaa">Sin puntos este período</div>
-        <input type="number" value="0" disabled style="opacity:.5">
+        <div class="sb-name" style="color:#aaa">0 puntos este período</div>
+        <input type="number" value="0" disabled>
       </div></div>`;
   }
-  const cols=currentMode==='umbral'?'1fr 1fr':'1fr 1fr 1fr';
   const showSegs=currentMode==='umbral'?[0,1]:[0,1,2];
-  return`<div class="seg-inputs" style="grid-template-columns:${cols}">${showSegs.map(si=>`
+  const cols=currentMode==='umbral'?'1fr 1fr':'1fr 1fr 1fr';
+  return`${typeToggle}<div class="seg-inputs" style="grid-template-columns:${cols}">${showSegs.map(si=>`
     <div class="seg-block">
       <div class="sb-badge" style="color:${SEG_COLORS[si]}">● ${names[si]}</div>
-      <div class="sb-name">${meta.segs[si].name}</div>
+      <div class="sb-name">${meta.segs[si]?.name||''}</div>
       <label>Puntos</label>
-      <input type="number" id="pts_${meta.id}_${si}" value="${meta.segs[si].pts}" min="0" step="500" onchange="areaData[currentArea].metas.find(m=>m.id==='${meta.id}').segs[${si}].pts=parseInt(this.value)||0;calc()">
-      ${meta.segs[si].ref?`<div class="sb-ref">${meta.segs[si].ref}</div>`:''}
+      <input type="number" id="pts_${meta.id}_${si}" value="${meta.segs[si]?.pts||0}" min="0" step="500"
+        onchange="areaData[currentArea].metas.find(m=>m.id==='${meta.id}').segs[${si}].pts=parseInt(this.value)||0;calc();saveSession()">
+      ${meta.segs[si]?.ref?`<div class="sb-ref">${meta.segs[si].ref}</div>`:''}
     </div>`).join('')}</div>`;
 }
 
 function calc(){
   renderSegCounts();
   const metas=areaData[currentArea].metas;
-  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];const total=getTotal();
   let grand=0,segTotals=[0,0,0];const barData=[];
   metas.forEach((meta,mi)=>{
     if(!meta.on)return;
     let mt=0;
     const showSegs=currentMode==='dicotomico'?[0]:currentMode==='umbral'?[0,1]:[0,1,2];
-    showSegs.forEach(si=>{const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||meta.segs[si].pts;const c=pts*segs[si];mt+=c;segTotals[si]+=c;});
+    if(meta.igual){
+      const pts=parseInt(document.getElementById('pts_'+meta.id+'_all')?.value)||meta.segs[0]?.pts||0;
+      const c=pts*total;mt+=c;segTotals[0]+=c;
+    } else {
+      showSegs.forEach(si=>{const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||meta.segs[si]?.pts||0;const c=pts*segs[si];mt+=c;segTotals[si]+=c;});
+    }
     grand+=mt;barData.push({label:meta.label,total:mt,color:META_COLORS[mi%META_COLORS.length]});
   });
   document.getElementById('heroNum').textContent=fmt(grand)+' pts';
+  saveSession();
   const names=getSegNames();
   const mobUp=parseInt(document.getElementById('sUp')?.value||5);
   const mobDown=parseInt(document.getElementById('sDown')?.value||5);
@@ -1043,7 +1131,7 @@ function removeScenRow(ri){
 
 function calcScen(){
   const rows=areaData[currentArea].scenarios?.[currentScenType]||[];
-  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];const total=getTotal();
   let grand=0;const segT=[0,0,0];
   rows.forEach(r=>{r.pts.forEach((p,si)=>{const c=p*segs[si];grand+=c;segT[si]+=c;});});
   document.getElementById('scenHeroNum').textContent=fmt(grand)+' pts';
@@ -1061,7 +1149,7 @@ function renderBudget(){
   const prog=document.getElementById('cfgName')?.value||'';
   const ptVal=parseFloat(document.getElementById('cfgPtVal')?.value)||1;
   const moneda=document.getElementById('cfgMoneda')?.value||'CLP';
-  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];const total=getTotal();
   const names=getSegNames();
   const today=new Date().toLocaleDateString('es-CL',{year:'numeric',month:'long',day:'numeric'});
   document.getElementById('bTitle').textContent=prog||'Presupuesto mensual';
@@ -1152,7 +1240,7 @@ function exportCSV(){
   const prog=document.getElementById('cfgName')?.value||'';
   const moneda=document.getElementById('cfgMoneda')?.value||'CLP';
   const ptVal=parseFloat(document.getElementById('cfgPtVal')?.value)||1;
-  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];const total=getTotal();
   const names=getSegNames();const area=AREAS.find(a=>a.id===currentArea)?.label||currentArea;
   const today=new Date().toLocaleDateString('es-CL');
   const metas=areaData[currentArea].metas.filter(m=>m.on);
@@ -1252,11 +1340,117 @@ function renderAll(){
   renderMetas();calc();
 }
 
-document.getElementById('sTot').addEventListener('input',e=>{document.getElementById('sTotV').textContent=e.target.value;calc();});
-document.getElementById('sUp').addEventListener('input',e=>{document.getElementById('sUpV').textContent=e.target.value+'%';calc();});
-document.getElementById('sDown').addEventListener('input',e=>{document.getElementById('sDownV').textContent=e.target.value+'%';calc();});
+// sTot listener moved to oninput on the input element
+
+
 
 renderAll();
+const IS_CLIENT = false;
+
+// ── QUICK DOT ──────────────────────────────────────────────────────────────
+function quickDot(n){
+  const el=document.getElementById('sTot');
+  if(el){el.value=n;document.getElementById('sTotV').textContent=n;calc();saveSession();}
+}
+
+// ── VARIABILITY ────────────────────────────────────────────────────────────
+let currentVar='low';
+const VAR_MAP={low:{up:5,down:5},medium:{up:15,down:15},high:{up:25,down:25}};
+function setVar(level){
+  currentVar=level;
+  document.querySelectorAll('.var-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('varBtn-'+level)?.classList.add('active');
+  const v=VAR_MAP[level];
+  document.getElementById('sUp').value=v.up;
+  document.getElementById('sDown').value=v.down;
+  calc();
+  saveSession();
+}
+
+// ── META TIPO TOGGLE ────────────────────────────────────────────────────────
+function toggleMetaTipo(metaId,isIgual){
+  const meta=areaData[currentArea].metas.find(m=>m.id===metaId);
+  if(!meta)return;
+  meta.igual=isIgual;
+  const body=document.getElementById('mbody_'+metaId);
+  if(body)body.innerHTML=renderMetaBody(meta,getSegNames());
+  if(typeof attachMetaChangeWatchers==='function')setTimeout(attachMetaChangeWatchers,50);
+  calc();saveSession();
+}
+
+// ── SESSION SAVE ────────────────────────────────────────────────────────────
+let _saveTimer=null;
+function saveSession(){
+  clearTimeout(_saveTimer);
+  _saveTimer=setTimeout(()=>{
+    try{
+      const segSuffix=IS_CLIENT?'C':'';
+      const session={
+        v:3,ts:Date.now(),
+        area:currentArea,mode:currentMode,varLevel:currentVar,
+        dotacion:parseInt(document.getElementById('sTot')?.value)||200,
+        metas:JSON.parse(JSON.stringify(areaData)),
+        segNames:[
+          document.getElementById('seg0name'+segSuffix)?.value||'Top',
+          document.getElementById('seg1name'+segSuffix)?.value||'Medio',
+          document.getElementById('seg2name'+segSuffix)?.value||'En desarrollo',
+        ],
+        cfgOrg:  document.getElementById('cfgOrg'+segSuffix)?.value||'',
+        cfgName: document.getElementById('cfgName'+segSuffix)?.value||'',
+        cfgMoneda:document.getElementById('cfgMoneda'+segSuffix)?.value||'CLP',
+      };
+      localStorage.setItem('apprecio_session_'+(IS_CLIENT?'cli':'int'),JSON.stringify(session));
+      const badge=document.getElementById('saveBadge');
+      if(badge){
+        const now=new Date();
+        badge.textContent='💾 Guardado '+now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+        badge.style.opacity='1';
+        setTimeout(()=>{if(badge)badge.style.opacity='.5';},3000);
+      }
+    }catch(e){console.warn('saveSession error',e);}
+  },800);
+}
+
+function loadAndRestoreSession(){
+  try{
+    const raw=localStorage.getItem('apprecio_session_'+(IS_CLIENT?'cli':'int'));
+    if(!raw)return;
+    const s=JSON.parse(raw);
+    if(!s||s.v!==3)return;
+    if(Date.now()-s.ts>7*24*60*60*1000)return;
+    // Show restore banner
+    const banner=document.getElementById('restoreBanner');
+    const tsEl=document.getElementById('restoreTs');
+    if(banner&&tsEl){
+      const d=new Date(s.ts);
+      tsEl.textContent=d.toLocaleDateString('es-CL')+' a las '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+      banner.style.display='flex';
+      // Auto-restore data
+      const segSuffix=IS_CLIENT?'C':'';
+      if(s.dotacion){const t=document.getElementById('sTot');if(t){t.value=s.dotacion;document.getElementById('sTotV').textContent=s.dotacion;}}
+      if(s.mode){currentMode=s.mode;setMode(s.mode);}
+      if(s.varLevel)setVar(s.varLevel);
+      if(s.area){currentArea=s.area;}
+      if(s.metas)Object.keys(s.metas).forEach(k=>{if(areaData[k])areaData[k]=s.metas[k];});
+      if(s.segNames){
+        ['seg0name','seg1name','seg2name'].forEach((id,i)=>{
+          const el=document.getElementById(id+segSuffix);
+          if(el&&s.segNames[i])el.value=s.segNames[i];
+        });
+      }
+      if(s.cfgOrg){const el=document.getElementById('cfgOrg'+segSuffix);if(el)el.value=s.cfgOrg;}
+      if(s.cfgName){const el=document.getElementById('cfgName'+segSuffix);if(el)el.value=s.cfgName;}
+      if(s.cfgMoneda){const el=document.getElementById('cfgMoneda'+segSuffix);if(el)el.value=s.cfgMoneda;}
+    }
+  }catch(e){console.warn('loadSession error',e);}
+}
+
+function discardSession(){
+  localStorage.removeItem('apprecio_session_'+(IS_CLIENT?'cli':'int'));
+  document.getElementById('restoreBanner')?.remove();
+  location.reload();
+}
+
 </script>
 </body>
 </html>
