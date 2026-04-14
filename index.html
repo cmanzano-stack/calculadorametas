@@ -150,6 +150,29 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 .toast.show{opacity:1;transform:translateY(0)}
 /* FLUJO BADGE */
 .flujo-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(6,95,70,.1);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+/* ── STAGE SELECTOR ─────────────────────────────────────────────────────── */
+.stage-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.stage-label-block{flex-shrink:0}
+.stage-label-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:4px}
+.stage-label-value{font-size:14px;font-weight:800;color:var(--text)}
+.stage-cards{display:flex;gap:10px;flex:1;flex-wrap:wrap}
+.stage-card{flex:1;min-width:140px;border:2px solid var(--border);border-radius:10px;padding:.875rem 1rem;cursor:pointer;transition:all .2s;background:var(--card);position:relative;overflow:hidden}
+.stage-card:hover{border-color:var(--primary);transform:translateY(-1px);box-shadow:0 4px 12px rgba(250,52,94,.1)}
+.stage-card.active{border-color:var(--primary);background:var(--primary-light)}
+.stage-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--primary)}
+.sc-icon{font-size:22px;margin-bottom:6px}
+.sc-name{font-size:13px;font-weight:800;margin-bottom:3px;color:var(--text)}
+.sc-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.sc-badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;text-transform:uppercase;letter-spacing:.06em}
+.sc-badge-active{background:var(--primary);color:#fff}
+.stage-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.stage-apply-btn{padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:700;background:var(--primary);color:#fff;border:none;font-family:'Montserrat',sans-serif;transition:all .15s;white-space:nowrap}
+.stage-apply-btn:hover{background:var(--primary-dark)}
+.stage-apply-btn:disabled{background:#e5e7eb;color:#9ca3af;cursor:not-allowed}
+.stage-reset-btn{padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:600;background:transparent;color:var(--muted);border:1px solid var(--border);font-family:'Montserrat',sans-serif;transition:all .15s}
+.stage-reset-btn:hover{border-color:var(--primary);color:var(--primary)}
+.stage-loaded-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-text);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
+.metas-modified-note{background:var(--amber-bg);border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:11px;color:var(--amber-text);font-weight:600;margin-bottom:.75rem;display:none;align-items:center;gap:6px}
 .mode-banner{border-radius:10px;padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid;transition:all .3s}
 .mode-banner.segmentado{background:rgba(250,52,94,.06);border-color:rgba(250,52,94,.2)}
 .mode-banner.dicotomico{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.3)}
@@ -200,6 +223,43 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
 
 <!-- CALCULADORA -->
 <div class="page on" id="page-calc">
+
+  <!-- STAGE SELECTOR -->
+  <div class="stage-bar" id="stageBar">
+    <div class="stage-label-block">
+      <div class="stage-label-title">Etapa del programa</div>
+      <div class="stage-label-value" id="stageLabelValue">Sin seleccionar</div>
+    </div>
+    <div class="stage-cards" id="stageCards">
+      <div class="stage-card" id="stageCard-onboarding" onclick="selectStage('onboarding')">
+        <div class="sc-icon">🌱</div>
+        <div class="sc-name">Onboarding</div>
+        <div class="sc-desc">Primeras semanas. Metas de activación: logins, capacitaciones, primeras transacciones.</div>
+      </div>
+      <div class="stage-card" id="stageCard-growth" onclick="selectStage('growth')">
+        <div class="sc-icon">📈</div>
+        <div class="sc-name">Crecimiento</div>
+        <div class="sc-desc">Operación plena. Metas de desempeño real: ventas, KPIs, indicadores del negocio.</div>
+      </div>
+      <div class="stage-card" id="stageCard-alto" onclick="selectStage('alto')">
+        <div class="sc-icon">🏆</div>
+        <div class="sc-name">Alto rendimiento</div>
+        <div class="sc-desc">Programa maduro. Metas exigentes, milestones de antigüedad, reconocimiento élite.</div>
+      </div>
+    </div>
+    <div class="stage-actions">
+      <div id="stageLoadedBadge" style="display:none">
+        <span class="stage-loaded-badge" id="stageLoadedText">✓ Cargado</span>
+      </div>
+      <button class="stage-apply-btn" id="stageApplyBtn" onclick="applyStageToCalc()" disabled>
+        Cargar en calculadora →
+      </button>
+      <button class="stage-reset-btn" id="stageResetBtn" onclick="resetStage()" style="display:none">
+        ↺ Restaurar metas
+      </button>
+    </div>
+  </div>
+
   <div class="area-tabs" id="areaTabs"></div>
 
   <div class="g2">
@@ -242,6 +302,7 @@ tr.hilite td{background:var(--primary-light);font-weight:600}
   <div class="card">
     <div class="ctitle">Metas activas — <span id="areaLabelCalc" style="color:var(--primary)"></span></div>
     <div id="modeBanner"></div>
+    <div class="metas-modified-note" id="metasModifiedNote">✏️ Metas ajustadas manualmente sobre el escenario <strong id="modifiedStageLabel"></strong> — los cambios no se guardan automáticamente.</div>
     <div id="metasContainer"></div>
     <div style="margin-top:.5rem"><button class="add-meta-btn" onclick="showPage('config')">+ Agregar o editar metas en Configuración</button></div>
   </div>
@@ -522,6 +583,141 @@ const BASE_PRESETS={
 let currentArea='ventas';
 let currentScenType='onboarding';
 let currentMode='segmentado';
+
+// ── STAGE STATE ─────────────────────────────────────────────────────────────
+let selectedStage = null;       // which card is highlighted
+let loadedStage   = null;       // which stage was last applied
+let originalMetas = {};         // snapshot of metas before stage was loaded
+
+function selectStage(stage){
+  selectedStage = stage;
+  // Update card visuals
+  ['onboarding','growth','alto'].forEach(s => {
+    const card = document.getElementById('stageCard-'+s);
+    card.classList.toggle('active', s === stage);
+    const badge = card.querySelector('.sc-badge');
+    if(badge) badge.remove();
+    if(s === stage){
+      const b = document.createElement('span');
+      b.className='sc-badge sc-badge-active';
+      b.textContent = loadedStage===s ? '✓ Activo' : 'Seleccionado';
+      card.appendChild(b);
+    } else if(loadedStage === s){
+      const b = document.createElement('span');
+      b.className='sc-badge';
+      b.style.cssText='background:#e5e7eb;color:#6b7280';
+      b.textContent = '✓ Activo';
+      card.appendChild(b);
+    }
+  });
+  // Update label
+  const labels = {onboarding:'🌱 Onboarding', growth:'📈 Crecimiento', alto:'🏆 Alto rendimiento'};
+  document.getElementById('stageLabelValue').textContent = labels[stage] || stage;
+  // Enable apply button (only if different from loaded)
+  const applyBtn = document.getElementById('stageApplyBtn');
+  applyBtn.disabled = (stage === loadedStage);
+  applyBtn.textContent = stage === loadedStage ? '✓ Ya cargado' : 'Cargar en calculadora →';
+}
+
+function applyStageToCalc(){
+  if(!selectedStage) return;
+  const stage = selectedStage;
+  const scenRows = areaData[currentArea].scenarios?.[stage] || [];
+  if(!scenRows.length){
+    showToast('No hay actividades definidas para este escenario en esta área.');
+    return;
+  }
+
+  // Save original metas snapshot if this is the first load
+  if(!loadedStage){
+    originalMetas[currentArea] = JSON.parse(JSON.stringify(areaData[currentArea].metas));
+  }
+
+  // Map scenario rows into metas format
+  // Each scenario row: {label, pts:[top,mid,dev]}
+  const names = getSegNames();
+  const newMetas = scenRows.map((row, i) => ({
+    id: 'scen_'+stage+'_'+i,
+    label: row.label,
+    on: true,
+    flujo: false,
+    segs: [
+      {name: names[0]+' — meta', pts: row.pts[0], ref:''},
+      {name: names[1]+' — meta', pts: row.pts[1], ref:''},
+      {name: names[2]+' — meta', pts: row.pts[2], ref:''},
+    ]
+  }));
+
+  // Replace metas with scenario ones
+  areaData[currentArea].metas = newMetas;
+  loadedStage = stage;
+
+  // Update UI state
+  document.getElementById('stageApplyBtn').disabled = true;
+  document.getElementById('stageApplyBtn').textContent = '✓ Ya cargado';
+  document.getElementById('stageLoadedBadge').style.display = 'block';
+  const stageNames = {onboarding:'Onboarding', growth:'Crecimiento', alto:'Alto rendimiento'};
+  document.getElementById('stageLoadedText').textContent = '✓ '+stageNames[stage]+' cargado';
+  document.getElementById('stageResetBtn').style.display = 'block';
+  // Show modified note (hidden until user edits)
+  const note = document.getElementById('metasModifiedNote');
+  note.style.display = 'none';
+  const modLabel = document.getElementById('modifiedStageLabel');
+  if(modLabel) modLabel.textContent = stageNames[stage];
+
+  // Update badge on card
+  selectStage(stage);
+
+  // Re-render metas and recalc
+  renderMetas();
+  calc();
+
+  // Attach change watchers to new meta inputs so we can show "modified" note
+  setTimeout(attachMetaChangeWatchers, 100);
+
+  showToast('✓ Escenario "'+stageNames[stage]+'" cargado en la calculadora');
+}
+
+function attachMetaChangeWatchers(){
+  document.querySelectorAll('#metasContainer input[type=number], #metasContainer input[type=checkbox]').forEach(input => {
+    input.addEventListener('change', () => {
+      const note = document.getElementById('metasModifiedNote');
+      if(loadedStage && note) note.style.display = 'flex';
+    }, {once: true});
+  });
+}
+
+function resetStage(){
+  if(!loadedStage) return;
+  const stageNames = {onboarding:'Onboarding', growth:'Crecimiento', alto:'Alto rendimiento'};
+  if(!confirm('¿Restaurar las metas originales del área? Se perderán los ajustes manuales sobre el escenario "'+stageNames[loadedStage]+'".')){
+    return;
+  }
+  // Restore original metas
+  if(originalMetas[currentArea]){
+    areaData[currentArea].metas = JSON.parse(JSON.stringify(originalMetas[currentArea]));
+    delete originalMetas[currentArea];
+  }
+  // Reset stage state
+  loadedStage = null;
+  selectedStage = null;
+  document.getElementById('stageApplyBtn').disabled = true;
+  document.getElementById('stageApplyBtn').textContent = 'Cargar en calculadora →';
+  document.getElementById('stageLoadedBadge').style.display = 'none';
+  document.getElementById('stageResetBtn').style.display = 'none';
+  document.getElementById('stageLabelValue').textContent = 'Sin seleccionar';
+  document.getElementById('metasModifiedNote').style.display = 'none';
+  // Clear active cards
+  ['onboarding','growth','alto'].forEach(s => {
+    const card = document.getElementById('stageCard-'+s);
+    card.classList.remove('active');
+    const badge = card.querySelector('.sc-badge');
+    if(badge) badge.remove();
+  });
+  renderMetas();
+  calc();
+  showToast('✓ Metas originales restauradas');
+}
 let areaData={};
 AREAS.forEach(a=>{areaData[a.id]=JSON.parse(JSON.stringify(BASE_PRESETS[a.id]));});
 let isDirty=false,savedSnapshot=null;
@@ -612,7 +808,7 @@ function initAreaTabs(containerId,onSelect){
     const btn=document.createElement('button');
     btn.className='area-tab'+(a.id===currentArea?' on':'');
     btn.textContent=a.label;
-    btn.onclick=()=>{currentArea=a.id;c.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');onSelect();};
+    btn.onclick=()=>{currentArea=a.id;c.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(loadedStage){loadedStage=null;selectedStage=null;document.getElementById('stageApplyBtn').disabled=true;document.getElementById('stageApplyBtn').textContent='Cargar en calculadora →';document.getElementById('stageLoadedBadge').style.display='none';document.getElementById('stageResetBtn').style.display='none';document.getElementById('stageLabelValue').textContent='Sin seleccionar';document.getElementById('metasModifiedNote').style.display='none';['onboarding','growth','alto'].forEach(s=>{const card=document.getElementById('stageCard-'+s);card.classList.remove('active');const badge=card.querySelector('.sc-badge');if(badge)badge.remove();});}onSelect();};
     c.appendChild(btn);
   });
 }
