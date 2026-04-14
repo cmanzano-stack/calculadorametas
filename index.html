@@ -3,270 +3,259 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Puntos · Incentivos por Segmento</title>
+<title>Apprecio · Calculadora de Incentivos (Interno)</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f5f3;--card:#fff;--border:#e5e5e2;--border2:#d0d0cc;
-  --text:#1a1a18;--muted:#888;--light:#f0f0ee;
-  --blue:#3b82f6;--blue-bg:#eff6ff;--blue-text:#1d4ed8;--blue-border:#bfdbfe;
-  --green:#10b981;--green-bg:#f0fdf4;--green-text:#15803d;--green-border:#bbf7d0;
+  --bg:#FDF5F7;--card:#fff;--border:#FAD4DE;--border2:#f0b8c8;
+  --text:#1a0a0e;--muted:#9a6070;--light:#FDE8ED;
+  --primary:#FA345E;--primary-dark:#D42A4E;--primary-light:#FDE8ED;
+  --green:#065F46;--green-bg:#F0FFF4;--green-text:#065F46;--green-border:#6ee7b7;
   --amber:#f59e0b;--amber-bg:#fffbeb;--amber-text:#b45309;--amber-border:#fde68a;
-  --purple:#8b5cf6;--purple-bg:#f5f3ff;--purple-text:#5b21b6;
-  --pink:#ec4899;
-  --red:#ef4444;--red-bg:#fef2f2;--red-text:#b91c1c;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;--purple-text:#5b21b6;
+  --seg0:#FA345E;--seg1:#065F46;--seg2:#f59e0b;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* NAV */
-nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100}
-nav .brand{font-size:15px;font-weight:600;color:var(--text);padding:1rem 1.5rem 1rem 0;border-right:1px solid var(--border);margin-right:.5rem;white-space:nowrap}
-nav .nav-tabs{display:flex;gap:0;overflow-x:auto}
-nav .nav-tab{padding:.875rem 1.25rem;font-size:13px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none}
-nav .nav-tab:hover{color:var(--text)}
-nav .nav-tab.on{color:var(--blue-text);border-bottom-color:var(--blue);font-weight:500}
-nav .nav-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(250,52,94,.08)}
+.brand{padding:.75rem 1.5rem .75rem 0;border-right:1px solid var(--border);margin-right:.5rem}
+.brand img{height:30px;display:block}
+.nav-tabs{display:flex;gap:0;overflow-x:auto}
+.nav-tab{padding:.875rem 1.25rem;font-size:13px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none}
+.nav-tab:hover{color:var(--primary)}
+.nav-tab.on{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+.nav-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.badge-interno{background:var(--primary-light);color:var(--primary-dark);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.05em;border:1px solid var(--border)}
 .btn{padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;transition:all .15s;border:1px solid var(--border2);background:var(--card);color:var(--text)}
 .btn:hover{background:var(--light)}
-.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
-.btn-primary:hover{background:#2563eb;border-color:#2563eb}
-.btn-success{background:var(--green);color:#fff;border-color:var(--green)}
-.btn-success:hover{background:#059669}
-.btn-warn{background:var(--amber);color:#fff;border-color:var(--amber)}
-.btn-warn:hover{background:#d97706}
-.save-bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--border);padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:50;transform:translateY(100%);transition:transform .2s}
-.save-bar.visible{transform:translateY(0)}
-.save-bar .sb-msg{font-size:13px;color:var(--amber-text);display:flex;align-items:center;gap:6px}
-.save-bar .sb-actions{display:flex;gap:8px}
-.saved-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1a18;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-size:13px;z-index:200;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none}
-.saved-toast.show{opacity:1;transform:translateY(0)}
-
-/* PAGES */
-.page{display:none;padding:1.75rem 2rem;max-width:960px;margin:0 auto}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-green{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-green:hover{background:#044035}
+.page{display:none;padding:1.75rem 2rem;max-width:980px;margin:0 auto}
 .page.on{display:block}
-
-/* LAYOUT */
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.875rem}
-.ctitle{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.875rem}
+.ctitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.875rem}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:.875rem}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:.875rem}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:.875rem}
-
-/* METRICS */
 .met{background:var(--light);border-radius:8px;padding:.875rem}
 .met-l{font-size:11px;color:var(--muted);margin-bottom:3px}
-.met-v{font-size:21px;font-weight:500}
+.met-v{font-size:21px;font-weight:600}
 .met-s{font-size:11px;color:var(--muted);margin-top:2px}
-
-/* FORM */
 label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
 .row{display:flex;align-items:center;gap:10px;margin-bottom:.6rem}
-.row input[type=range]{flex:1;accent-color:var(--blue);cursor:pointer}
-.rval{font-size:13px;font-weight:500;min-width:68px;text-align:right}
+.row input[type=range]{flex:1;accent-color:var(--primary);cursor:pointer}
+.rval{font-size:13px;font-weight:600;min-width:68px;text-align:right;color:var(--primary)}
 input[type=number],input[type=text],select{width:100%;padding:6px 9px;border:1px solid var(--border2);border-radius:6px;font-size:12px;background:var(--card);color:var(--text);outline:none}
-input[type=number]:focus,input[type=text]:focus,select:focus{border-color:var(--blue)}
+input[type=number]:focus,input[type=text]:focus,select:focus{border-color:var(--primary)}
 .divider{height:1px;background:var(--light);margin:.875rem 0}
-
-/* HERO */
-.hero{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:12px;padding:1.5rem;margin-bottom:.875rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.hero-num{font-size:42px;font-weight:500;color:var(--blue-text)}
-.hero-lbl{font-size:13px;color:var(--blue);margin-bottom:4px}
-.hero-right{text-align:right;font-size:12px;color:var(--blue);line-height:2}
-
-/* TOGGLES */
+.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border-radius:14px;padding:1.5rem;margin-bottom:.875rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.hero-num{font-size:42px;font-weight:700;color:#fff}
+.hero-lbl{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:4px}
+.hero-right{text-align:right;font-size:12px;color:rgba(255,255,255,.85);line-height:2}
 .tog-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
-.tog-row .tog-label{font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px}
+.tog-row label{font-size:13px;color:var(--text);margin:0;cursor:pointer}
 .tog{position:relative;width:36px;height:20px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0;position:absolute}
 .tslider{position:absolute;inset:0;background:#d1d5db;border-radius:10px;cursor:pointer;transition:.2s}
 .tslider:before{content:'';position:absolute;width:14px;height:14px;bottom:3px;left:3px;background:white;border-radius:50%;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
-input:checked+.tslider{background:var(--blue)}
+input:checked+.tslider{background:var(--primary)}
 input:checked+.tslider:before{transform:translateX(16px)}
-
-/* BARS */
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
-.bar-lbl{min-width:130px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-lbl{min-width:140px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-track{flex:1;height:8px;background:var(--light);border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:width .3s}
-.bar-pts{min-width:90px;text-align:right;font-weight:500;font-size:12px}
-
-/* SEGMENTS */
+.bar-pts{min-width:90px;text-align:right;font-weight:600;font-size:12px}
 .seg-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
 .seg-block{background:var(--light);border-radius:8px;padding:10px;border:1px solid var(--border)}
-.seg-block .sb-badge{font-size:10px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px}
-.seg-block .sb-name{font-size:11px;color:#555;margin-bottom:6px;line-height:1.3;min-height:28px}
-.seg-block .sb-ref{font-size:10px;color:#bbb;margin-top:3px}
+.sb-badge{font-size:10px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.sb-name{font-size:11px;color:#555;margin-bottom:6px;line-height:1.3;min-height:28px}
+.sb-ref{font-size:10px;color:#bbb;margin-top:3px}
 .meta-block{margin-bottom:1rem}
 .meta-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:4px 0}
-.meta-title{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px}
+.meta-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.meta-disabled{font-size:12px;color:#bbb;padding:4px 0}
-
-/* PILLS */
-.pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:500}
-.pill-b{background:var(--blue-bg);color:var(--blue-text)}
+.meta-disabled{font-size:12px;color:#bbb;padding:4px 0;font-style:italic}
+.pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:600}
+.pill-r{background:var(--primary-light);color:var(--primary-dark)}
 .pill-g{background:var(--green-bg);color:var(--green-text)}
 .pill-a{background:var(--amber-bg);color:var(--amber-text)}
 .pill-p{background:var(--purple-bg);color:var(--purple-text)}
-
-/* TABLES */
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:7px 10px;font-weight:500;color:var(--muted);border-bottom:1px solid var(--light);font-size:12px}
+th{text-align:left;padding:7px 10px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--light);font-size:12px}
 td{padding:8px 10px;border-bottom:1px solid var(--light)}
 tr:last-child td{border-bottom:none}
-tr.hilite td{background:var(--blue-bg)}
-
-/* PRESUPUESTO PAGE */
-.budget-section{margin-bottom:1.5rem}
-.budget-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-.budget-title{font-size:18px;font-weight:500}
-.budget-meta{font-size:12px;color:var(--muted)}
-.bcard{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1rem}
-.bcard-head{background:var(--light);padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.bcard-head .bh-title{font-size:13px;font-weight:500}
-.bcard-head .bh-total{font-size:13px;font-weight:600;color:var(--blue-text)}
-.bcard-body{padding:0}
-.bcard-row{display:flex;justify-content:space-between;align-items:center;padding:.625rem 1rem;border-bottom:1px solid var(--light);font-size:13px}
-.bcard-row:last-child{border-bottom:none}
-.bcard-row .br-label{color:var(--muted)}
-.bcard-row .br-segs{display:flex;gap:8px}
-.bcard-row .br-total{font-weight:500;min-width:80px;text-align:right}
-.bcard-footer{background:var(--blue-bg);padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--blue-border)}
-.bcard-footer .bf-label{font-size:13px;color:var(--blue-text);font-weight:500}
-.bcard-footer .bf-total{font-size:16px;font-weight:600;color:var(--blue-text)}
-.grand-total-box{background:var(--blue-text);border-radius:12px;padding:1.5rem;color:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-.gt-left .gt-label{font-size:13px;opacity:.8;margin-bottom:4px}
-.gt-left .gt-num{font-size:38px;font-weight:500}
-.gt-right{text-align:right;font-size:12px;opacity:.8;line-height:2}
-.notice{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green-text);margin-bottom:1rem}
-
-/* CONFIG PAGE */
-.config-row{display:flex;align-items:center;gap:12px;margin-bottom:.75rem}
-.config-row label{min-width:160px;font-size:13px;color:var(--muted);margin:0}
-.config-row input,.config-row select{max-width:220px}
-.add-meta-btn{border:1px dashed var(--border2);background:transparent;border-radius:8px;padding:.75rem 1rem;font-size:13px;color:var(--muted);cursor:pointer;width:100%;text-align:center;transition:all .15s}
-.add-meta-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
-.remove-btn{padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:transparent;font-size:12px;color:var(--muted);cursor:pointer}
-.remove-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
-.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;background:var(--amber-bg);color:var(--amber-text);font-weight:500}
-
-/* SEG COUNTS */
-.sc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.sc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.coverage-note{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green-text);margin-top:.5rem}
-
-/* AREA TABS */
+tr.hilite td{background:var(--primary-light)}
 .area-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
 .area-tab{padding:6px 14px;border:1px solid var(--border2);border-radius:20px;font-size:13px;cursor:pointer;background:var(--card);color:var(--muted);transition:all .15s}
-.area-tab:hover{border-color:var(--blue);color:var(--blue)}
-.area-tab.on{background:var(--blue-bg);color:var(--blue-text);border-color:var(--blue-border);font-weight:500}
-
+.area-tab:hover{border-color:var(--primary);color:var(--primary)}
+.area-tab.on{background:var(--primary-light);color:var(--primary-dark);border-color:var(--border2);font-weight:600}
+.sc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.coverage-note{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green-text);margin-top:.5rem;font-weight:500}
+/* SCENARIO PAGE */
+.scen-type-tabs{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.scen-tab{padding:8px 18px;border-radius:30px;font-size:13px;cursor:pointer;border:1px solid var(--border2);background:var(--card);color:var(--muted);font-weight:500;transition:all .15s}
+.scen-tab:hover{border-color:var(--primary)}
+.scen-tab.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.scen-desc{background:var(--light);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--muted);margin-bottom:1rem;border-left:3px solid var(--primary)}
+.scen-row{display:flex;align-items:center;gap:0;margin-bottom:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.scen-label{padding:12px 14px;font-size:13px;flex:1;font-weight:500}
+.scen-segs{display:flex}
+.scen-seg{padding:10px 14px;text-align:center;min-width:100px;font-size:12px}
+.scen-seg .ss-pts{font-size:16px;font-weight:700}
+.scen-seg .ss-lbl{font-size:10px;color:var(--muted);margin-top:2px}
+.scen-seg-0{background:rgba(250,52,94,.07)}
+.scen-seg-1{background:rgba(6,95,70,.07)}
+.scen-seg-2{background:rgba(245,158,11,.07)}
+.scen-total{padding:10px 14px;min-width:90px;text-align:right;font-size:13px;font-weight:700;color:var(--primary);border-left:1px solid var(--border)}
+/* BUDGET */
+.budget-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem;flex-wrap:wrap;gap:12px}
+.budget-title-txt{font-size:20px;font-weight:700}
+.budget-meta-txt{font-size:12px;color:var(--muted);margin-top:2px}
+.bcard{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem}
+.bcard-head{background:var(--light);padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.bh-title{font-size:13px;font-weight:600}
+.bh-total{font-size:13px;font-weight:700;color:var(--primary)}
+.bcard-row{display:flex;justify-content:space-between;align-items:center;padding:.625rem 1rem;border-bottom:1px solid var(--light);font-size:13px;flex-wrap:wrap;gap:8px}
+.bcard-row:last-child{border-bottom:none}
+.br-segs{display:flex;gap:6px;flex-wrap:wrap}
+.br-total{font-weight:600;min-width:80px;text-align:right}
+.bcard-footer{background:var(--primary-light);padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.bf-label{font-size:13px;color:var(--primary-dark);font-weight:600}
+.bf-total{font-size:16px;font-weight:700;color:var(--primary-dark)}
+.grand-box{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:14px;padding:1.5rem;color:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:12px}
+.gt-label{font-size:13px;opacity:.8;margin-bottom:4px}
+.gt-num{font-size:38px;font-weight:700}
+.gt-right{text-align:right;font-size:12px;opacity:.85;line-height:2}
+/* CONFIG */
+.config-row{display:flex;align-items:center;gap:12px;margin-bottom:.75rem}
+.config-row label{min-width:170px;font-size:13px;color:var(--muted);margin:0}
+.config-row input,.config-row select{max-width:240px}
+.add-meta-btn{border:1px dashed var(--border2);background:transparent;border-radius:8px;padding:.75rem 1rem;font-size:13px;color:var(--muted);cursor:pointer;width:100%;text-align:center;transition:all .15s}
+.add-meta-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.remove-btn{padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:transparent;font-size:12px;color:var(--muted);cursor:pointer}
+.remove-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.save-bar{position:sticky;bottom:0;background:#fff;border-top:2px solid var(--primary);padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:50;transform:translateY(100%);transition:transform .25s;box-shadow:0 -4px 20px rgba(250,52,94,.12)}
+.save-bar.visible{transform:translateY(0)}
+.sb-msg{font-size:13px;color:var(--primary-dark);font-weight:600;display:flex;align-items:center;gap:6px}
+.sb-actions{display:flex;gap:8px}
+.saved-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--green);color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-size:13px;z-index:200;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none;font-weight:600}
+.saved-toast.show{opacity:1;transform:translateY(0)}
 @media(max-width:640px){
-  nav{padding:0 1rem}.page{padding:1rem}.g2,.g3,.g4,.seg-inputs{grid-template-columns:1fr}
+  nav{padding:0 1rem}.page{padding:1rem}
+  .g2,.g3,.g4,.seg-inputs{grid-template-columns:1fr}
   .hero{flex-direction:column;text-align:center}.hero-right{text-align:center}
-  nav .brand{font-size:13px;padding:.875rem 1rem .875rem 0}
-  nav .nav-tab{padding:.875rem .875rem}
+  .scen-segs{flex-direction:column}.scen-seg{min-width:unset}
+}
+@media print{
+  nav{display:none}
+  .page{display:block!important;padding:0}
+  .btn,.save-bar,.area-tabs{display:none!important}
+  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
 </head>
 <body>
-
 <nav>
-  <div class="brand">📊 Incentivos</div>
+  <div class="brand"><img src="https://estudios.apprecio.com/hubfs/logos/Apprecio-logo-rojo.png" alt="Apprecio"></div>
   <div class="nav-tabs">
     <button class="nav-tab on" onclick="showPage('calc')">Calculadora</button>
+    <button class="nav-tab" onclick="showPage('scenarios')">Escenarios</button>
     <button class="nav-tab" onclick="showPage('budget')">Presupuesto</button>
     <button class="nav-tab" onclick="showPage('config')">Configuración</button>
   </div>
   <div class="nav-actions">
-    <button class="btn btn-success" onclick="exportCSV()">↓ Exportar CSV</button>
+    <span class="badge-interno">USO INTERNO</span>
+    <button class="btn btn-green" onclick="exportCSV()">↓ CSV</button>
     <button class="btn btn-primary" onclick="window.print()">🖨 Imprimir</button>
   </div>
 </nav>
 
-<!-- ═══════════════ CALCULADORA ═══════════════ -->
+<!-- CALC -->
 <div class="page on" id="page-calc">
-
   <div class="area-tabs" id="areaTabs"></div>
-
   <div class="g2">
     <div class="card" style="margin:0">
       <div class="ctitle">Dotación</div>
-      <div>
-        <label>Total de personas en el equipo</label>
+      <div><label>Total de personas en el equipo</label>
         <div class="row"><input type="range" id="sTot" min="10" max="2000" step="10" value="200"><span class="rval" id="sTotV">200</span></div>
       </div>
       <div class="divider"></div>
-      <div class="ctitle">Distribución por segmento</div>
-      <div>
-        <label>🔵 Top — mejores vendedores</label>
+      <div class="ctitle">Distribución</div>
+      <div><label>🔴 Top — mejores</label>
         <div class="row"><input type="range" id="pTop" min="5" max="40" step="5" value="20"><span class="rval" id="pTopV">20%</span></div>
       </div>
-      <div>
-        <label>🟢 Medio — vendedores regulares</label>
+      <div><label>🟢 Medio — regulares</label>
         <div class="row"><input type="range" id="pMid" min="10" max="60" step="5" value="50"><span class="rval" id="pMidV">50%</span></div>
       </div>
       <div style="font-size:12px;color:var(--muted);padding:4px 0">🟡 En desarrollo: <strong id="pDevV" style="color:var(--text)">30%</strong></div>
+      <div class="divider"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="saveDotacion()">✓ Guardar dotación</button>
     </div>
-
     <div class="card" style="margin:0">
       <div class="ctitle">Personas por segmento</div>
       <div id="segCounts"></div>
-      <div class="coverage-note">✅ Con este modelo, <strong>100%</strong> de la dotación acumula puntos — no solo el top 20%.</div>
+      <div class="coverage-note">✅ 100% de la dotación acumula puntos</div>
     </div>
   </div>
-
   <div class="card">
-    <div class="ctitle">Metas y puntos por segmento</div>
+    <div class="ctitle">Metas activas</div>
     <div id="metasContainer"></div>
-    <div style="margin-top:.5rem">
-      <button class="add-meta-btn" onclick="showPage('config')">+ Agregar o editar metas desde Configuración</button>
-    </div>
+    <div style="margin-top:.5rem"><button class="add-meta-btn" onclick="showPage('config')">+ Agregar o editar metas en Configuración</button></div>
   </div>
-
   <div class="hero">
-    <div>
-      <div class="hero-lbl">Presupuesto mensual total</div>
-      <div class="hero-num" id="heroNum">0 pts</div>
-    </div>
+    <div><div class="hero-lbl">Presupuesto mensual total</div><div class="hero-num" id="heroNum">0 pts</div></div>
     <div class="hero-right" id="heroBreak"></div>
   </div>
-
   <div class="g3" id="summCards"></div>
-
-  <div class="card">
-    <div class="ctitle">Distribución por meta</div>
-    <div id="barChart"></div>
-  </div>
-
-  <div class="card">
-    <div class="ctitle">Escenarios por dotación</div>
-    <div id="scenarioTable"></div>
-  </div>
+  <div class="card"><div class="ctitle">Distribución por meta</div><div id="barChart"></div></div>
+  <div class="card"><div class="ctitle">Escenarios de dotación</div><div id="scenarioTable"></div></div>
 </div>
 
-<!-- ═══════════════ PRESUPUESTO ═══════════════ -->
+<!-- SCENARIOS -->
+<div class="page" id="page-scenarios">
+  <div class="area-tabs" id="areaTabsScen"></div>
+  <div style="margin-bottom:1rem">
+    <div class="ctitle">Tipo de escenario</div>
+    <div class="scen-type-tabs" id="scenTypeTabs"></div>
+    <div class="scen-desc" id="scenDesc"></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem;flex-wrap:wrap;gap:8px">
+      <div class="ctitle" style="margin:0">Actividades y puntos por segmento</div>
+      <div style="display:flex;gap:8px">
+        <span style="font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--seg0);display:inline-block"></span>Top</span>
+        <span style="font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--seg1);display:inline-block"></span>Medio</span>
+        <span style="font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--seg2);display:inline-block"></span>En desarrollo</span>
+      </div>
+    </div>
+    <div id="scenRows"></div>
+    <div style="margin-top:1rem"><button class="add-meta-btn" onclick="addScenRow()">+ Agregar actividad</button></div>
+  </div>
+  <div class="hero" style="margin-top:.875rem">
+    <div><div class="hero-lbl">Total estimado del escenario</div><div class="hero-num" id="scenHeroNum">0 pts</div></div>
+    <div class="hero-right" id="scenHeroBreak"></div>
+  </div>
+  <div class="g3" id="scenSummCards"></div>
+</div>
+
+<!-- BUDGET -->
 <div class="page" id="page-budget">
   <div class="budget-header">
-    <div>
-      <div class="budget-title" id="bTitle">Presupuesto mensual de puntos</div>
-      <div class="budget-meta" id="bMeta"></div>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-success" onclick="exportCSV()">↓ CSV</button>
-      <button class="btn btn-primary" onclick="window.print()">🖨 Imprimir</button>
-    </div>
+    <div><div class="budget-title-txt" id="bTitle">Presupuesto mensual</div><div class="budget-meta-txt" id="bMeta"></div></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-green" onclick="exportCSV()">↓ CSV</button><button class="btn btn-primary" onclick="window.print()">🖨 Imprimir</button></div>
   </div>
   <div id="budgetContent"></div>
 </div>
 
-<!-- ═══════════════ CONFIGURACIÓN ═══════════════ -->
+<!-- CONFIG -->
 <div class="page" id="page-config">
   <div class="card">
     <div class="ctitle">Información del programa</div>
     <div class="config-row"><label>Nombre del programa</label><input type="text" id="cfgName" value="Programa de Incentivos 2025" oninput="markDirty()"></div>
-    <div class="config-row"><label>Empresa / Organización</label><input type="text" id="cfgOrg" value="Mercado Pago" oninput="markDirty()"></div>
-    <div class="config-row"><label>Moneda de referencia</label>
+    <div class="config-row"><label>Empresa / cliente</label><input type="text" id="cfgOrg" value="Mercado Pago" oninput="markDirty()"></div>
+    <div class="config-row"><label>Moneda</label>
       <select id="cfgMoneda" onchange="markDirty()">
         <option value="ARS">ARS — Peso argentino</option>
         <option value="USD">USD — Dólar</option>
@@ -275,43 +264,37 @@ tr.hilite td{background:var(--blue-bg)}
         <option value="BRL">BRL — Real brasileño</option>
       </select>
     </div>
-    <div class="config-row"><label>Valor del punto (en moneda)</label><input type="number" id="cfgPtVal" value="1" min="0.01" step="0.01" oninput="markDirty()"></div>
+    <div class="config-row"><label>Valor del punto</label><input type="number" id="cfgPtVal" value="1" min="0.01" step="0.01" oninput="markDirty()"></div>
   </div>
-
   <div class="card">
     <div class="ctitle">Nombres de segmentos</div>
-    <div class="config-row"><label>Nombre segmento 1 (Top)</label><input type="text" id="seg0name" value="Top" oninput="markDirty()"></div>
-    <div class="config-row"><label>Nombre segmento 2 (Medio)</label><input type="text" id="seg1name" value="Medio" oninput="markDirty()"></div>
-    <div class="config-row"><label>Nombre segmento 3 (En desarrollo)</label><input type="text" id="seg2name" value="En desarrollo" oninput="markDirty()"></div>
+    <div class="config-row"><label>Segmento 1 (Top 🔴)</label><input type="text" id="seg0name" value="Top" oninput="markDirty()"></div>
+    <div class="config-row"><label>Segmento 2 (Medio 🟢)</label><input type="text" id="seg1name" value="Medio" oninput="markDirty()"></div>
+    <div class="config-row"><label>Segmento 3 (Desarrollo 🟡)</label><input type="text" id="seg2name" value="En desarrollo" oninput="markDirty()"></div>
   </div>
-
   <div class="card" id="cfgMetasCard">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.875rem">
-      <div class="ctitle" style="margin:0">Metas del área — <span id="cfgAreaLabel" style="color:var(--blue)"></span></div>
+      <div class="ctitle" style="margin:0">Metas — <span id="cfgAreaLabel" style="color:var(--primary)"></span></div>
       <div id="cfgAreaTabs" style="display:flex;gap:5px;flex-wrap:wrap"></div>
     </div>
     <div id="cfgMetas"></div>
-    <div style="margin-top:.875rem">
-      <button class="add-meta-btn" onclick="addMeta()">+ Agregar nueva meta</button>
-    </div>
+    <div style="margin-top:.875rem"><button class="add-meta-btn" onclick="addMeta()">+ Agregar nueva meta</button></div>
   </div>
-
   <div class="save-bar" id="saveBar">
-    <div class="sb-msg">⚠️ Tenés cambios sin guardar</div>
+    <div class="sb-msg">⚠️ Cambios sin guardar</div>
     <div class="sb-actions">
       <button class="btn" onclick="discardChanges()">Descartar</button>
-      <button class="btn btn-primary" onclick="saveConfig()">✓ Guardar cambios</button>
+      <button class="btn btn-primary" onclick="saveConfig()">✓ Guardar</button>
     </div>
   </div>
 </div>
 
-<div class="saved-toast" id="savedToast">✓ Cambios guardados</div>
+<div class="saved-toast" id="savedToast">✓ Guardado</div>
 
 <script>
-// ─── DATA ────────────────────────────────────────────────────────────────────
-const SEG_COLORS=['#3b82f6','#10b981','#f59e0b'];
-const META_COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#ef4444','#06b6d4'];
-
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const SEG_COLORS=['#FA345E','#065F46','#f59e0b'];
+const META_COLORS=['#FA345E','#065F46','#f59e0b','#8b5cf6','#06b6d4','#ec4899','#ef4444'];
 const AREAS=[
   {id:'ventas',label:'Fuerza de venta'},
   {id:'logistica',label:'Logística'},
@@ -320,421 +303,301 @@ const AREAS=[
   {id:'tech',label:'Tecnología'},
   {id:'cs',label:'Customer Success'},
 ];
-
-const PRESETS={
-  ventas:{metas:[
-    {id:'m1',label:'Meta de flujo (recaudación)',on:true,segs:[
-      {name:'Top (≥$3M)',pts:30000,ref:'1% del flujo'},
-      {name:'Medio ($2M–$2.9M)',pts:15000,ref:'0.5% del flujo'},
-      {name:'En desarrollo ($1M–$1.9M)',pts:5000,ref:'0.2% del flujo'},
-    ]},
-    {id:'m2',label:'Máquinas activas por flujo',on:true,segs:[
-      {name:'Top (≥$2M/máquina)',pts:25000,ref:''},
-      {name:'Medio ($1.5M–$1.9M)',pts:12000,ref:''},
-      {name:'En desarrollo ($1M–$1.4M)',pts:4000,ref:''},
-    ]},
-    {id:'m3',label:'Entrenamiento / capacitación',on:true,segs:[
-      {name:'Aprobado con distinción',pts:5000,ref:''},
-      {name:'Aprobado',pts:3000,ref:''},
-      {name:'Completado',pts:1000,ref:''},
-    ]},
-    {id:'m4',label:'Nuevas activaciones de máquinas',on:false,segs:[
-      {name:'Top (≥10 nuevas)',pts:15000,ref:''},
-      {name:'Medio (5–9 nuevas)',pts:7000,ref:''},
-      {name:'En desarrollo (1–4 nuevas)',pts:2000,ref:''},
-    ]},
-    {id:'m5',label:'Retención de comercios activos',on:false,segs:[
-      {name:'Top (≥95% retención)',pts:10000,ref:''},
-      {name:'Medio (85–94%)',pts:5000,ref:''},
-      {name:'En desarrollo (70–84%)',pts:2000,ref:''},
-    ]},
-    {id:'m6',label:'Antigüedad del comercio activo',on:false,segs:[
-      {name:'Top (≥12 meses activo)',pts:8000,ref:''},
-      {name:'Medio (6–11 meses)',pts:4000,ref:''},
-      {name:'En desarrollo (1–5 meses)',pts:1500,ref:''},
-    ]},
-  ]},
-  logistica:{metas:[
-    {id:'m1',label:'Entregas a tiempo',on:true,segs:[
-      {name:'Top (≥99%)',pts:20000,ref:''},
-      {name:'Medio (95–98%)',pts:10000,ref:''},
-      {name:'En desarrollo (90–94%)',pts:3000,ref:''},
-    ]},
-    {id:'m2',label:'Incidencias y daños',on:true,segs:[
-      {name:'Top (<0.5%)',pts:15000,ref:''},
-      {name:'Medio (0.5–1.5%)',pts:7000,ref:''},
-      {name:'En desarrollo (1.5–3%)',pts:2000,ref:''},
-    ]},
-    {id:'m3',label:'Capacitación y seguridad',on:true,segs:[
-      {name:'Aprobado con distinción',pts:5000,ref:''},
-      {name:'Aprobado',pts:3000,ref:''},
-      {name:'Completado',pts:1000,ref:''},
-    ]},
-    {id:'m4',label:'Optimización de ruta',on:false,segs:[
-      {name:'Top (>15% ahorro)',pts:12000,ref:''},
-      {name:'Medio (8–15%)',pts:6000,ref:''},
-      {name:'En desarrollo (3–7%)',pts:2000,ref:''},
-    ]},
-    {id:'m5',label:'Sin accidentes (90 días)',on:false,segs:[
-      {name:'Top (90 días completos)',pts:10000,ref:''},
-      {name:'Medio (60 días)',pts:5000,ref:''},
-      {name:'En desarrollo (30 días)',pts:2000,ref:''},
-    ]},
-    {id:'m6',label:'Satisfacción del destinatario',on:false,segs:[
-      {name:'Top (NPS ≥9)',pts:8000,ref:''},
-      {name:'Medio (NPS 7–8)',pts:4000,ref:''},
-      {name:'En desarrollo (NPS 5–6)',pts:1500,ref:''},
-    ]},
-  ]},
-  retail:{metas:[
-    {id:'m1',label:'Meta de ventas mensual',on:true,segs:[
-      {name:'Top (≥120% de meta)',pts:22000,ref:''},
-      {name:'Medio (100–119%)',pts:12000,ref:''},
-      {name:'En desarrollo (80–99%)',pts:4000,ref:''},
-    ]},
-    {id:'m2',label:'Ticket promedio',on:true,segs:[
-      {name:'Top (≥20% sobre objetivo)',pts:15000,ref:''},
-      {name:'Medio (0–19%)',pts:7000,ref:''},
-      {name:'En desarrollo (hasta objetivo)',pts:2500,ref:''},
-    ]},
-    {id:'m3',label:'Capacitación de producto',on:true,segs:[
-      {name:'Aprobado con distinción',pts:4000,ref:''},
-      {name:'Aprobado',pts:2500,ref:''},
-      {name:'Completado',pts:1000,ref:''},
-    ]},
-    {id:'m4',label:'Cross-selling y upselling',on:false,segs:[
-      {name:'Top (≥3 productos/venta)',pts:12000,ref:''},
-      {name:'Medio (2 productos/venta)',pts:5000,ref:''},
-      {name:'En desarrollo (1.5 productos)',pts:2000,ref:''},
-    ]},
-    {id:'m5',label:'NPS y satisfacción del cliente',on:false,segs:[
-      {name:'Top (NPS ≥9)',pts:10000,ref:''},
-      {name:'Medio (NPS 7–8)',pts:5000,ref:''},
-      {name:'En desarrollo (NPS 5–6)',pts:1500,ref:''},
-    ]},
-    {id:'m6',label:'Reducción de merma / devoluciones',on:false,segs:[
-      {name:'Top (<1% merma)',pts:8000,ref:''},
-      {name:'Medio (1–3%)',pts:4000,ref:''},
-      {name:'En desarrollo (3–5%)',pts:1500,ref:''},
-    ]},
-  ]},
-  cobranzas:{metas:[
-    {id:'m1',label:'Recupero sobre meta',on:true,segs:[
-      {name:'Top (≥110%)',pts:25000,ref:''},
-      {name:'Medio (90–109%)',pts:12000,ref:''},
-      {name:'En desarrollo (70–89%)',pts:4000,ref:''},
-    ]},
-    {id:'m2',label:'Mora temprana reducida',on:true,segs:[
-      {name:'Top (<5% mora)',pts:18000,ref:''},
-      {name:'Medio (5–15%)',pts:8000,ref:''},
-      {name:'En desarrollo (15–25%)',pts:3000,ref:''},
-    ]},
-    {id:'m3',label:'Capacitación en negociación',on:true,segs:[
-      {name:'Aprobado con distinción',pts:4000,ref:''},
-      {name:'Aprobado',pts:2500,ref:''},
-      {name:'Completado',pts:1000,ref:''},
-    ]},
-    {id:'m4',label:'Promesas de pago cumplidas',on:false,segs:[
-      {name:'Top (≥80%)',pts:10000,ref:''},
-      {name:'Medio (60–79%)',pts:5000,ref:''},
-      {name:'En desarrollo (40–59%)',pts:2000,ref:''},
-    ]},
-    {id:'m5',label:'Sin reclamos validados',on:false,segs:[
-      {name:'Top (0 reclamos, 90 días)',pts:10000,ref:''},
-      {name:'Medio (0 reclamos, 60 días)',pts:5000,ref:''},
-      {name:'En desarrollo (0 reclamos, 30 días)',pts:2000,ref:''},
-    ]},
-    {id:'m6',label:'Contactabilidad del deudor',on:false,segs:[
-      {name:'Top (≥90% contactado)',pts:8000,ref:''},
-      {name:'Medio (70–89%)',pts:4000,ref:''},
-      {name:'En desarrollo (50–69%)',pts:1500,ref:''},
-    ]},
-  ]},
-  tech:{metas:[
-    {id:'m1',label:'SLA y disponibilidad',on:true,segs:[
-      {name:'Top (≥99.9% uptime)',pts:20000,ref:''},
-      {name:'Medio (99–99.8%)',pts:10000,ref:''},
-      {name:'En desarrollo (97–98.9%)',pts:3000,ref:''},
-    ]},
-    {id:'m2',label:'Bugs críticos resueltos',on:true,segs:[
-      {name:'Top (≥10/mes en tiempo)',pts:18000,ref:''},
-      {name:'Medio (5–9/mes)',pts:8000,ref:''},
-      {name:'En desarrollo (1–4/mes)',pts:3000,ref:''},
-    ]},
-    {id:'m3',label:'Certificación técnica',on:true,segs:[
-      {name:'Aprobado con distinción',pts:6000,ref:''},
-      {name:'Aprobado',pts:3500,ref:''},
-      {name:'Completado',pts:1500,ref:''},
-    ]},
-    {id:'m4',label:'Features lanzados a tiempo',on:false,segs:[
-      {name:'Top (100% on-time)',pts:15000,ref:''},
-      {name:'Medio (80–99%)',pts:7000,ref:''},
-      {name:'En desarrollo (60–79%)',pts:2500,ref:''},
-    ]},
-    {id:'m5',label:'Retención de usuarios del producto',on:false,segs:[
-      {name:'Top (≥95% retención)',pts:10000,ref:''},
-      {name:'Medio (85–94%)',pts:5000,ref:''},
-      {name:'En desarrollo (70–84%)',pts:2000,ref:''},
-    ]},
-    {id:'m6',label:'Code review y calidad de código',on:false,segs:[
-      {name:'Top (0 deuda técnica nueva)',pts:8000,ref:''},
-      {name:'Medio (baja deuda técnica)',pts:4000,ref:''},
-      {name:'En desarrollo (en proceso)',pts:1500,ref:''},
-    ]},
-  ]},
-  cs:{metas:[
-    {id:'m1',label:'NPS del cliente',on:true,segs:[
-      {name:'Top (NPS ≥9)',pts:20000,ref:''},
-      {name:'Medio (NPS 7–8)',pts:10000,ref:''},
-      {name:'En desarrollo (NPS 5–6)',pts:3000,ref:''},
-    ]},
-    {id:'m2',label:'Resolución en primer contacto',on:true,segs:[
-      {name:'Top (≥90% FCR)',pts:18000,ref:''},
-      {name:'Medio (75–89%)',pts:8000,ref:''},
-      {name:'En desarrollo (60–74%)',pts:2500,ref:''},
-    ]},
-    {id:'m3',label:'Capacitación en atención',on:true,segs:[
-      {name:'Aprobado con distinción',pts:5000,ref:''},
-      {name:'Aprobado',pts:3000,ref:''},
-      {name:'Completado',pts:1000,ref:''},
-    ]},
-    {id:'m4',label:'Tiempo de respuesta',on:false,segs:[
-      {name:'Top (<2 hs promedio)',pts:12000,ref:''},
-      {name:'Medio (2–6 hs)',pts:6000,ref:''},
-      {name:'En desarrollo (6–24 hs)',pts:2000,ref:''},
-    ]},
-    {id:'m5',label:'Retención de cuenta / churn',on:false,segs:[
-      {name:'Top (<2% churn)',pts:15000,ref:''},
-      {name:'Medio (2–5%)',pts:7000,ref:''},
-      {name:'En desarrollo (5–10%)',pts:2500,ref:''},
-    ]},
-    {id:'m6',label:'Upsell / expansión de cuenta',on:false,segs:[
-      {name:'Top (≥20% expansión)',pts:10000,ref:''},
-      {name:'Medio (10–19%)',pts:5000,ref:''},
-      {name:'En desarrollo (1–9%)',pts:2000,ref:''},
-    ]},
-  ]},
+const SCENARIO_TYPES={
+  onboarding:{label:'Onboarding',desc:'Puntos por actividades iniciales — login, primera capacitación, encuesta. Bajo umbral, alto alcance. Ideal para enganchar a toda la dotación desde el día 1.',color:'#065F46'},
+  growth:{label:'Crecimiento',desc:'Metas escalonadas por segmento. El vendedor ya opera y necesita incentivos para mejorar resultados. Exige esfuerzo real para ganar puntos.',color:'#FA345E'},
+  legacy:{label:'Alto rendimiento',desc:'Metas ambiciosas para el equipo consolidado y milestones por antigüedad. Bajo porcentaje califica, alto premio. Genera aspiración y fidelización a largo plazo.',color:'#7c3aed'},
 };
 
-// ─── STATE ───────────────────────────────────────────────────────────────────
-let currentArea='ventas';
-// Deep-clone presets so edits don't mutate originals
-let areaData={};
-AREAS.forEach(a=>{ areaData[a.id]=JSON.parse(JSON.stringify(PRESETS[a.id])); });
+const BASE_PRESETS={
+  ventas:{
+    metas:[
+      {id:'m1',label:'Cruce de boletas',on:true,segs:[{name:'Top (≥50 cruces)',pts:30000,ref:'Meta élite'},{name:'Medio (25–49)',pts:15000,ref:'Meta regular'},{name:'En desarrollo (1–24)',pts:5000,ref:'Primeros cruces'}]},
+      {id:'m2',label:'PSJ — Puntos de servicio/jornada',on:true,segs:[{name:'Top (≥8 PSJ/día)',pts:25000,ref:''},{name:'Medio (5–7)',pts:12000,ref:''},{name:'En desarrollo (1–4)',pts:4000,ref:''}]},
+      {id:'m3',label:'New MAS captados',on:true,segs:[{name:'Top (≥10 MAS)',pts:20000,ref:''},{name:'Medio (5–9)',pts:10000,ref:''},{name:'En desarrollo (1–4)',pts:3000,ref:''}]},
+      {id:'m4',label:'TPV / Headcount',on:false,segs:[{name:'Top (≥$3M)',pts:28000,ref:'1% flujo'},{name:'Medio ($1.5M–$2.9M)',pts:14000,ref:'0.5% flujo'},{name:'En desarrollo ($500K–$1.4M)',pts:5000,ref:'0.2%'}]},
+      {id:'m5',label:'Retención de comercios',on:false,segs:[{name:'Top (≥95%)',pts:10000,ref:''},{name:'Medio (85–94%)',pts:5000,ref:''},{name:'En desarrollo (70–84%)',pts:2000,ref:''}]},
+      {id:'m6',label:'Capacitación / Learnings',on:true,segs:[{name:'Sobresaliente+bonus',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
+    ],
+    scenarios:{
+      onboarding:[{label:'Primer login',pts:[500,500,500]},{label:'Primera capacitación',pts:[1000,1000,1000]},{label:'Encuesta respondida',pts:[300,300,300]},{label:'Primera venta',pts:[2000,1500,1000]},{label:'Primeros 5 leads',pts:[1500,1000,500]},{label:'Primer cruce de boletas',pts:[3000,2000,1000]}],
+      growth:[{label:'Meta cruce de boletas',pts:[30000,15000,5000]},{label:'PSJ mensual',pts:[25000,12000,4000]},{label:'New MAS captados',pts:[20000,10000,3000]},{label:'Capacitación aprobada',pts:[5000,3000,1000]},{label:'TPV alcanzado',pts:[28000,14000,5000]}],
+      legacy:[{label:'TPV élite (≥$5M)',pts:[50000,30000,10000]},{label:'Milestone 1er año',pts:[5000,5000,5000]},{label:'Milestone Consolidado',pts:[10000,10000,10000]},{label:'Milestone Veterano',pts:[20000,20000,20000]},{label:'Milestone Elite',pts:[35000,35000,35000]},{label:'Milestone Leyenda',pts:[50000,50000,50000]}],
+    }
+  },
+  logistica:{
+    metas:[
+      {id:'m1',label:'Entregas a tiempo',on:true,segs:[{name:'Top (≥99%)',pts:20000,ref:''},{name:'Medio (95–98%)',pts:10000,ref:''},{name:'En desarrollo (90–94%)',pts:3000,ref:''}]},
+      {id:'m2',label:'Incidencias y daños',on:true,segs:[{name:'Top (<0.5%)',pts:15000,ref:''},{name:'Medio (0.5–1.5%)',pts:7000,ref:''},{name:'En desarrollo (1.5–3%)',pts:2000,ref:''}]},
+      {id:'m3',label:'Capacitación y seguridad',on:true,segs:[{name:'Aprobado con distinción',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m4',label:'Optimización de ruta',on:false,segs:[{name:'Top (>15% ahorro)',pts:12000,ref:''},{name:'Medio (8–15%)',pts:6000,ref:''},{name:'En desarrollo (3–7%)',pts:2000,ref:''}]},
+      {id:'m5',label:'Sin accidentes (90d)',on:false,segs:[{name:'Top (90 días)',pts:10000,ref:''},{name:'Medio (60 días)',pts:5000,ref:''},{name:'En desarrollo (30d)',pts:2000,ref:''}]},
+      {id:'m6',label:'NPS destinatario',on:false,segs:[{name:'Top (≥9)',pts:8000,ref:''},{name:'Medio (7–8)',pts:4000,ref:''},{name:'En desarrollo (5–6)',pts:1500,ref:''}]},
+    ],
+    scenarios:{
+      onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Inducción completada',pts:[1000,1000,1000]},{label:'Primera entrega',pts:[500,500,500]}],
+      growth:[{label:'Entregas a tiempo',pts:[20000,10000,3000]},{label:'0 incidencias graves',pts:[15000,7000,2000]},{label:'Capacitación aprobada',pts:[5000,3000,1000]}],
+      legacy:[{label:'1 año sin accidentes',pts:[20000,20000,20000]},{label:'Reconocimiento regional',pts:[30000,20000,10000]}],
+    }
+  },
+  retail:{
+    metas:[
+      {id:'m1',label:'Meta ventas mensual',on:true,segs:[{name:'Top (≥120%)',pts:22000,ref:''},{name:'Medio (100–119%)',pts:12000,ref:''},{name:'En desarrollo (80–99%)',pts:4000,ref:''}]},
+      {id:'m2',label:'Ticket promedio',on:true,segs:[{name:'Top (≥20% sobre obj.)',pts:15000,ref:''},{name:'Medio (0–19%)',pts:7000,ref:''},{name:'En desarrollo',pts:2500,ref:''}]},
+      {id:'m3',label:'Capacitación',on:true,segs:[{name:'Con distinción',pts:4000,ref:''},{name:'Aprobado',pts:2500,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m4',label:'Cross-selling',on:false,segs:[{name:'Top (≥3 prod/venta)',pts:12000,ref:''},{name:'Medio (2)',pts:5000,ref:''},{name:'En desarrollo (1.5)',pts:2000,ref:''}]},
+      {id:'m5',label:'NPS cliente',on:false,segs:[{name:'Top (≥9)',pts:10000,ref:''},{name:'Medio (7–8)',pts:5000,ref:''},{name:'En desarrollo (5–6)',pts:1500,ref:''}]},
+      {id:'m6',label:'Reducción de merma',on:false,segs:[{name:'Top (<1%)',pts:8000,ref:''},{name:'Medio (1–3%)',pts:4000,ref:''},{name:'En desarrollo (3–5%)',pts:1500,ref:''}]},
+    ],
+    scenarios:{
+      onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Inducción completada',pts:[1000,1000,1000]},{label:'Primera venta',pts:[800,800,800]}],
+      growth:[{label:'Meta ventas',pts:[22000,12000,4000]},{label:'Ticket promedio',pts:[15000,7000,2500]},{label:'Capacitación aprobada',pts:[4000,2500,1000]}],
+      legacy:[{label:'Vendedor del año',pts:[50000,30000,10000]},{label:'1 año sin devoluciones',pts:[15000,15000,15000]}],
+    }
+  },
+  cobranzas:{
+    metas:[
+      {id:'m1',label:'Recupero sobre meta',on:true,segs:[{name:'Top (≥110%)',pts:25000,ref:''},{name:'Medio (90–109%)',pts:12000,ref:''},{name:'En desarrollo (70–89%)',pts:4000,ref:''}]},
+      {id:'m2',label:'Mora temprana',on:true,segs:[{name:'Top (<5%)',pts:18000,ref:''},{name:'Medio (5–15%)',pts:8000,ref:''},{name:'En desarrollo (15–25%)',pts:3000,ref:''}]},
+      {id:'m3',label:'Capacitación negociación',on:true,segs:[{name:'Con distinción',pts:4000,ref:''},{name:'Aprobado',pts:2500,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m4',label:'Promesas cumplidas',on:false,segs:[{name:'Top (≥80%)',pts:10000,ref:''},{name:'Medio (60–79%)',pts:5000,ref:''},{name:'En desarrollo (40–59%)',pts:2000,ref:''}]},
+      {id:'m5',label:'Sin reclamos',on:false,segs:[{name:'Top (90d)',pts:10000,ref:''},{name:'Medio (60d)',pts:5000,ref:''},{name:'En desarrollo (30d)',pts:2000,ref:''}]},
+      {id:'m6',label:'Contactabilidad',on:false,segs:[{name:'Top (≥90%)',pts:8000,ref:''},{name:'Medio (70–89%)',pts:4000,ref:''},{name:'En desarrollo (50–69%)',pts:1500,ref:''}]},
+    ],
+    scenarios:{
+      onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Módulo negociación',pts:[1000,1000,1000]},{label:'Primera gestión',pts:[500,500,500]}],
+      growth:[{label:'Recupero mensual',pts:[25000,12000,4000]},{label:'Mora reducida',pts:[18000,8000,3000]},{label:'Capacitación',pts:[4000,2500,1000]}],
+      legacy:[{label:'Recuperador del año',pts:[40000,25000,8000]},{label:'6 meses sin reclamos',pts:[15000,15000,15000]}],
+    }
+  },
+  tech:{
+    metas:[
+      {id:'m1',label:'SLA y disponibilidad',on:true,segs:[{name:'Top (≥99.9%)',pts:20000,ref:''},{name:'Medio (99–99.8%)',pts:10000,ref:''},{name:'En desarrollo (97–98.9%)',pts:3000,ref:''}]},
+      {id:'m2',label:'Bugs críticos resueltos',on:true,segs:[{name:'Top (≥10/mes)',pts:18000,ref:''},{name:'Medio (5–9)',pts:8000,ref:''},{name:'En desarrollo (1–4)',pts:3000,ref:''}]},
+      {id:'m3',label:'Certificación técnica',on:true,segs:[{name:'Con distinción',pts:6000,ref:''},{name:'Aprobado',pts:3500,ref:''},{name:'Completado',pts:1500,ref:''}]},
+      {id:'m4',label:'Features a tiempo',on:false,segs:[{name:'Top (100%)',pts:15000,ref:''},{name:'Medio (80–99%)',pts:7000,ref:''},{name:'En desarrollo (60–79%)',pts:2500,ref:''}]},
+      {id:'m5',label:'Retención usuarios',on:false,segs:[{name:'Top (≥95%)',pts:10000,ref:''},{name:'Medio (85–94%)',pts:5000,ref:''},{name:'En desarrollo (70–84%)',pts:2000,ref:''}]},
+      {id:'m6',label:'Calidad de código',on:false,segs:[{name:'0 deuda técnica',pts:8000,ref:''},{name:'Baja deuda',pts:4000,ref:''},{name:'En proceso',pts:1500,ref:''}]},
+    ],
+    scenarios:{
+      onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Onboarding técnico',pts:[1500,1500,1500]},{label:'Primer deploy',pts:[2000,1500,1000]}],
+      growth:[{label:'SLA mensual',pts:[20000,10000,3000]},{label:'Bugs cerrados',pts:[18000,8000,3000]},{label:'Certificación',pts:[6000,3500,1500]}],
+      legacy:[{label:'Tech lead trimestre',pts:[35000,20000,8000]},{label:'1 año sin incidentes',pts:[20000,20000,20000]}],
+    }
+  },
+  cs:{
+    metas:[
+      {id:'m1',label:'NPS del cliente',on:true,segs:[{name:'Top (≥9)',pts:20000,ref:''},{name:'Medio (7–8)',pts:10000,ref:''},{name:'En desarrollo (5–6)',pts:3000,ref:''}]},
+      {id:'m2',label:'FCR — Primer contacto',on:true,segs:[{name:'Top (≥90%)',pts:18000,ref:''},{name:'Medio (75–89%)',pts:8000,ref:''},{name:'En desarrollo (60–74%)',pts:2500,ref:''}]},
+      {id:'m3',label:'Capacitación',on:true,segs:[{name:'Con distinción',pts:5000,ref:''},{name:'Aprobado',pts:3000,ref:''},{name:'Completado',pts:1000,ref:''}]},
+      {id:'m4',label:'Tiempo de respuesta',on:false,segs:[{name:'Top (<2hs)',pts:12000,ref:''},{name:'Medio (2–6hs)',pts:6000,ref:''},{name:'En desarrollo (6–24hs)',pts:2000,ref:''}]},
+      {id:'m5',label:'Retención / churn',on:false,segs:[{name:'Top (<2%)',pts:15000,ref:''},{name:'Medio (2–5%)',pts:7000,ref:''},{name:'En desarrollo (5–10%)',pts:2500,ref:''}]},
+      {id:'m6',label:'Upsell / expansión',on:false,segs:[{name:'Top (≥20%)',pts:10000,ref:''},{name:'Medio (10–19%)',pts:5000,ref:''},{name:'En desarrollo (1–9%)',pts:2000,ref:''}]},
+    ],
+    scenarios:{
+      onboarding:[{label:'Primer login',pts:[300,300,300]},{label:'Primer ticket cerrado',pts:[500,500,500]},{label:'Capacitación inicial',pts:[1000,1000,1000]}],
+      growth:[{label:'NPS mensual',pts:[20000,10000,3000]},{label:'FCR mensual',pts:[18000,8000,2500]},{label:'Capacitación',pts:[5000,3000,1000]}],
+      legacy:[{label:'CS del año',pts:[40000,25000,10000]},{label:'0% churn trimestral',pts:[20000,15000,5000]}],
+    }
+  },
+};
 
-function getSegNames(){
-  return[
-    document.getElementById('seg0name')?.value||'Top',
-    document.getElementById('seg1name')?.value||'Medio',
-    document.getElementById('seg2name')?.value||'En desarrollo',
-  ];
+let currentArea='ventas';
+let currentScenType='onboarding';
+let areaData={};
+AREAS.forEach(a=>{areaData[a.id]=JSON.parse(JSON.stringify(BASE_PRESETS[a.id]));});
+let isDirty=false,savedSnapshot=null;
+
+// persistent dotacion
+let dotacion={total:200,top:20,mid:50};
+function saveDotacion(){
+  dotacion={total:getTotal(),top:getTopPct(),mid:getMidPct()};
+  localStorage.setItem('apprecio_dotacion',JSON.stringify(dotacion));
+  const t=document.getElementById('savedToast');t.textContent='✓ Dotación guardada';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);
 }
-function getMetaOn(id){
-  const el=document.getElementById('tog_'+id);
-  return el?el.checked:false;
+function loadDotacion(){
+  try{const d=JSON.parse(localStorage.getItem('apprecio_dotacion'));if(d){dotacion=d;}}catch(e){}
+  document.getElementById('sTot').value=dotacion.total;
+  document.getElementById('sTotV').textContent=dotacion.total;
+  document.getElementById('pTop').value=dotacion.top;
+  document.getElementById('pTopV').textContent=dotacion.top+'%';
+  document.getElementById('pMid').value=dotacion.mid;
+  document.getElementById('pMidV').textContent=dotacion.mid+'%';
 }
-function getPtsVal(mid,si){
-  const el=document.getElementById(`pts_${mid}_${si}`);
-  return el?parseInt(el.value)||0:0;
-}
+
 function fmt(n){return Math.round(n).toLocaleString('es-AR')}
 function getTotal(){return parseInt(document.getElementById('sTot')?.value)||200}
 function getTopPct(){return parseFloat(document.getElementById('pTop')?.value)||20}
 function getMidPct(){return parseFloat(document.getElementById('pMid')?.value)||50}
 function getDevPct(){return Math.max(0,100-getTopPct()-getMidPct())}
-function getSegs(){
-  const t=getTotal();
-  const top=Math.round(t*getTopPct()/100);
-  const mid=Math.round(t*getMidPct()/100);
-  const dev=t-top-mid;
-  return[top,mid,Math.max(0,dev)];
-}
+function getSegs(){const t=getTotal(),top=Math.round(t*getTopPct()/100),mid=Math.round(t*getMidPct()/100);return[top,mid,Math.max(0,t-top-mid)];}
+function getSegNames(){return[document.getElementById('seg0name')?.value||'Top',document.getElementById('seg1name')?.value||'Medio',document.getElementById('seg2name')?.value||'En desarrollo'];}
 
-// ─── PAGES ───────────────────────────────────────────────────────────────────
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
   document.getElementById('page-'+id).classList.add('on');
-  const idx={calc:0,budget:1,config:2}[id];
-  document.querySelectorAll('.nav-tab')[idx].classList.add('on');
+  const idx={calc:0,scenarios:1,budget:2,config:3}[id];
+  if(idx!==undefined) document.querySelectorAll('.nav-tab')[idx]?.classList.add('on');
   if(id==='budget') renderBudget();
   if(id==='config') renderConfig();
+  if(id==='scenarios') renderScenarios();
 }
 
-// ─── AREA TABS ────────────────────────────────────────────────────────────────
-function initAreaTabs(){
-  const container=document.getElementById('areaTabs');
-  container.innerHTML='';
+function initAreaTabs(containerId,onSelect){
+  const c=document.getElementById(containerId);if(!c)return;
+  c.innerHTML='';
   AREAS.forEach(a=>{
     const btn=document.createElement('button');
     btn.className='area-tab'+(a.id===currentArea?' on':'');
     btn.textContent=a.label;
-    btn.onclick=()=>{
-      currentArea=a.id;
-      container.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));
-      btn.classList.add('on');
-      renderMetas();
-      calc();
-    };
-    container.appendChild(btn);
+    btn.onclick=()=>{currentArea=a.id;c.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');onSelect();};
+    c.appendChild(btn);
   });
 }
 
-// ─── SEG COUNTS ───────────────────────────────────────────────────────────────
 function renderSegCounts(){
-  const[top,mid,dev]=getSegs();
-  const names=getSegNames();
+  const[top,mid,dev]=getSegs();const names=getSegNames();
   document.getElementById('pTopV').textContent=getTopPct()+'%';
   document.getElementById('pMidV').textContent=getMidPct()+'%';
   document.getElementById('pDevV').textContent=getDevPct()+'%';
   document.getElementById('segCounts').innerHTML=`
-    <div class="sc-row"><div class="sc-dot" style="background:#3b82f6"></div><span style="font-size:12px;flex:1">${names[0]} (${getTopPct()}%)</span><strong>${fmt(top)} personas</strong></div>
-    <div class="sc-row"><div class="sc-dot" style="background:#10b981"></div><span style="font-size:12px;flex:1">${names[1]} (${getMidPct()}%)</span><strong>${fmt(mid)} personas</strong></div>
-    <div class="sc-row"><div class="sc-dot" style="background:#f59e0b"></div><span style="font-size:12px;flex:1">${names[2]} (${getDevPct()}%)</span><strong>${fmt(dev)} personas</strong></div>
+    <div class="sc-row"><div class="sc-dot" style="background:var(--seg0)"></div><span style="font-size:12px;flex:1">${names[0]} (${getTopPct()}%)</span><strong>${fmt(top)}</strong></div>
+    <div class="sc-row"><div class="sc-dot" style="background:var(--seg1)"></div><span style="font-size:12px;flex:1">${names[1]} (${getMidPct()}%)</span><strong>${fmt(mid)}</strong></div>
+    <div class="sc-row"><div class="sc-dot" style="background:var(--seg2)"></div><span style="font-size:12px;flex:1">${names[2]} (${getDevPct()}%)</span><strong>${fmt(dev)}</strong></div>
   `;
 }
 
-// ─── METAS ────────────────────────────────────────────────────────────────────
 function renderMetas(){
   const metas=areaData[currentArea].metas;
   const names=getSegNames();
-  const container=document.getElementById('metasContainer');
-  container.innerHTML='';
+  const container=document.getElementById('metasContainer');container.innerHTML='';
   metas.forEach((meta,mi)=>{
     const color=META_COLORS[mi%META_COLORS.length];
-    const div=document.createElement('div');
-    div.className='meta-block';
-
-    // header row
-    const header=document.createElement('div');
-    header.className='meta-header';
-    header.innerHTML=`
-      <div class="meta-title">
-        <span class="dot" style="background:${color}"></span>
-        ${meta.label}
-      </div>
-      <label class="tog" title="Activar / desactivar">
-        <input type="checkbox" id="tog_${meta.id}" ${meta.on?'checked':''}>
-        <span class="tslider"></span>
-      </label>
-    `;
+    const div=document.createElement('div');div.className='meta-block';
+    const header=document.createElement('div');header.className='meta-header';
+    header.innerHTML=`<div class="meta-title"><span class="dot" style="background:${color}"></span>${meta.label}</div>
+      <label class="tog"><input type="checkbox" id="tog_${meta.id}" ${meta.on?'checked':''}><span class="tslider"></span></label>`;
     div.appendChild(header);
-
-    // body
-    const body=document.createElement('div');
-    body.id='meta-body-'+meta.id;
-    if(meta.on){
-      body.innerHTML=`<div class="seg-inputs">${meta.segs.map((seg,si)=>`
-        <div class="seg-block">
-          <div class="sb-badge" style="color:${SEG_COLORS[si]}">${['●','●','●'][si]} ${names[si]}</div>
-          <div class="sb-name">${seg.name}</div>
-          <label>Puntos</label>
-          <input type="number" id="pts_${meta.id}_${si}" value="${seg.pts}" min="0" step="500" onchange="syncPts('${meta.id}',${si});calc()">
-          ${seg.ref?`<div class="sb-ref">${seg.ref}</div>`:''}
-        </div>
-      `).join('')}</div>`;
-    } else {
-      body.innerHTML=`<div class="meta-disabled">Meta desactivada — activá el switch para incluirla en el cálculo.</div>`;
-    }
+    const body=document.createElement('div');body.id='mbody_'+meta.id;
+    if(meta.on){body.innerHTML=renderMetaBody(meta,names);}
+    else{body.innerHTML=`<div class="meta-disabled">Desactivada — activá el switch para incluirla.</div>`;}
     div.appendChild(body);
-
-    // divider
     if(mi<metas.length-1){const d=document.createElement('div');d.className='divider';div.appendChild(d);}
-
     container.appendChild(div);
-
-    // toggle listener — key fix: re-render only the body, not everything
     header.querySelector('input[type=checkbox]').addEventListener('change',function(){
       meta.on=this.checked;
-      if(meta.on){
-        body.innerHTML=`<div class="seg-inputs">${meta.segs.map((seg,si)=>`
-          <div class="seg-block">
-            <div class="sb-badge" style="color:${SEG_COLORS[si]}">${['●','●','●'][si]} ${names[si]}</div>
-            <div class="sb-name">${seg.name}</div>
-            <label>Puntos</label>
-            <input type="number" id="pts_${meta.id}_${si}" value="${seg.pts}" min="0" step="500" onchange="syncPts('${meta.id}',${si});calc()">
-            ${seg.ref?`<div class="sb-ref">${seg.ref}</div>`:''}
-          </div>
-        `).join('')}</div>`;
-      } else {
-        body.innerHTML=`<div class="meta-disabled">Meta desactivada — activá el switch para incluirla en el cálculo.</div>`;
-      }
+      body.innerHTML=meta.on?renderMetaBody(meta,names):`<div class="meta-disabled">Desactivada — activá el switch para incluirla.</div>`;
       calc();
     });
   });
 }
 
-function syncPts(mid,si){
-  const val=parseInt(document.getElementById(`pts_${mid}_${si}`)?.value)||0;
-  const meta=areaData[currentArea].metas.find(m=>m.id===mid);
-  if(meta) meta.segs[si].pts=val;
+function renderMetaBody(meta,names){
+  return`<div class="seg-inputs">${meta.segs.map((seg,si)=>`
+    <div class="seg-block">
+      <div class="sb-badge" style="color:${SEG_COLORS[si]}">● ${names[si]}</div>
+      <div class="sb-name">${seg.name}</div>
+      <label>Puntos</label>
+      <input type="number" id="pts_${meta.id}_${si}" value="${seg.pts}" min="0" step="500" onchange="areaData[currentArea].metas.find(m=>m.id==='${meta.id}').segs[${si}].pts=parseInt(this.value)||0;calc()">
+      ${seg.ref?`<div class="sb-ref">${seg.ref}</div>`:''}
+    </div>`).join('')}</div>`;
 }
 
-// ─── CALC ─────────────────────────────────────────────────────────────────────
 function calc(){
   renderSegCounts();
   const metas=areaData[currentArea].metas;
-  const[top,mid,dev]=getSegs();
-  const segs=[top,mid,dev];
-  let grand=0,segTotals=[0,0,0];
-  const barData=[];
-
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  let grand=0,segTotals=[0,0,0];const barData=[];
   metas.forEach((meta,mi)=>{
-    if(!meta.on) return;
-    let metaTotal=0;
-    meta.segs.forEach((seg,si)=>{
-      const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||seg.pts;
-      const contrib=pts*segs[si];
-      metaTotal+=contrib;
-      segTotals[si]+=contrib;
-    });
-    grand+=metaTotal;
-    barData.push({label:meta.label,total:metaTotal,color:META_COLORS[mi%META_COLORS.length]});
+    if(!meta.on)return;
+    let mt=0;
+    meta.segs.forEach((seg,si)=>{const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||seg.pts;const c=pts*segs[si];mt+=c;segTotals[si]+=c;});
+    grand+=mt;barData.push({label:meta.label,total:mt,color:META_COLORS[mi%META_COLORS.length]});
   });
-
   document.getElementById('heroNum').textContent=fmt(grand)+' pts';
   const names=getSegNames();
-  document.getElementById('heroBreak').innerHTML=`
-    <div style="font-size:12px;color:var(--blue);font-weight:500;margin-bottom:4px">Desglose por segmento</div>
-    <div>🔵 ${names[0]}: ${fmt(segTotals[0])} pts</div>
-    <div>🟢 ${names[1]}: ${fmt(segTotals[1])} pts</div>
-    <div>🟡 ${names[2]}: ${fmt(segTotals[2])} pts</div>
-  `;
-
-  document.getElementById('summCards').innerHTML=segs.map((count,si)=>`
-    <div class="met">
-      <div class="met-l" style="color:${SEG_COLORS[si]}">● ${names[si]} (${fmt(count)} personas)</div>
-      <div class="met-v">${fmt(count>0?segTotals[si]/count:0)} pts</div>
-      <div class="met-s">promedio/persona</div>
-    </div>
-  `).join('');
-
+  document.getElementById('heroBreak').innerHTML=`<div style="font-size:11px;opacity:.7;margin-bottom:4px;font-weight:600">POR SEGMENTO</div>
+    <div>🔴 ${names[0]}: ${fmt(segTotals[0])} pts</div><div>🟢 ${names[1]}: ${fmt(segTotals[1])} pts</div><div>🟡 ${names[2]}: ${fmt(segTotals[2])} pts</div>`;
+  document.getElementById('summCards').innerHTML=segs.map((cnt,si)=>`
+    <div class="met"><div class="met-l" style="color:${SEG_COLORS[si]}">● ${names[si]} (${fmt(cnt)} pers.)</div>
+    <div class="met-v">${fmt(cnt>0?segTotals[si]/cnt:0)} pts</div><div class="met-s">promedio/persona</div></div>`).join('');
   const maxBar=Math.max(...barData.map(b=>b.total),1);
-  document.getElementById('barChart').innerHTML=barData.length
-    ?barData.map(b=>`<div class="bar-row">
-        <div class="bar-lbl" title="${b.label}">${b.label}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(b.total/maxBar*100).toFixed(1)}%;background:${b.color}"></div></div>
-        <div class="bar-pts">${fmt(b.total)}</div>
-      </div>`).join('')
-    :'<div style="font-size:13px;color:var(--muted)">Activá al menos una meta para ver la distribución.</div>';
+  document.getElementById('barChart').innerHTML=barData.length?barData.map(b=>`
+    <div class="bar-row"><div class="bar-lbl" title="${b.label}">${b.label}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${(b.total/maxBar*100).toFixed(1)}%;background:${b.color}"></div></div>
+    <div class="bar-pts">${fmt(b.total)}</div></div>`).join(''):'<div style="font-size:13px;color:var(--muted)">Activá metas para ver la distribución.</div>';
+  const sizes=[50,100,200,500,1000];const totP=getTotal();
+  document.getElementById('scenarioTable').innerHTML=`<table><thead><tr><th>Dotación</th><th>${names[0]}</th><th>${names[1]}</th><th>${names[2]}</th><th>Total mensual</th><th>Pts/persona</th></tr></thead><tbody>
+    ${sizes.map(sz=>{const sT=Math.round(sz*getTopPct()/100),sM=Math.round(sz*getMidPct()/100),sD=sz-sT-sM;const est=totP>0?Math.round(grand/totP*sz):0;
+    return`<tr class="${sz===totP?'hilite':''}"><td><strong>${fmt(sz)}</strong>${sz===totP?' ◀':''}</td><td><span class="pill pill-r">${fmt(sT)}</span></td><td><span class="pill pill-g">${fmt(sM)}</span></td><td><span class="pill pill-a">${fmt(sD)}</span></td><td><strong>${fmt(est)} pts</strong></td><td>${fmt(sz>0?est/sz:0)}</td></tr>`;}).join('')}</tbody></table>`;
+}
 
-  const sizes=[50,100,200,500,1000];
-  const totPeople=getTotal();
-  document.getElementById('scenarioTable').innerHTML=`<table>
-    <thead><tr><th>Dotación</th><th>${names[0]}</th><th>${names[1]}</th><th>${names[2]}</th><th>Total mensual</th><th>Pts/persona</th></tr></thead>
-    <tbody>${sizes.map(sz=>{
-      const sTop=Math.round(sz*getTopPct()/100),sMid=Math.round(sz*getMidPct()/100),sDev=sz-sTop-sMid;
-      const est=totPeople>0?Math.round(grand/totPeople*sz):0;
-      return`<tr class="${sz===totPeople?'hilite':''}">
-        <td><strong>${fmt(sz)}</strong>${sz===totPeople?' ◀':''}</td>
-        <td><span class="pill pill-b">${fmt(sTop)}</span></td>
-        <td><span class="pill pill-g">${fmt(sMid)}</span></td>
-        <td><span class="pill pill-a">${fmt(sDev)}</span></td>
-        <td><strong>${fmt(est)} pts</strong></td>
-        <td>${fmt(sz>0?est/sz:0)}</td>
-      </tr>`;
-    }).join('')}</tbody>
-  </table>`;
+// ─── SCENARIOS ────────────────────────────────────────────────────────────────
+function initScenTypeTabs(){
+  const c=document.getElementById('scenTypeTabs');c.innerHTML='';
+  Object.entries(SCENARIO_TYPES).forEach(([key,st])=>{
+    const btn=document.createElement('button');
+    btn.className='scen-tab'+(key===currentScenType?' on':'');
+    btn.textContent=st.label;
+    btn.onclick=()=>{currentScenType=key;c.querySelectorAll('.scen-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderScenRows();};
+    c.appendChild(btn);
+  });
+}
+
+function renderScenarios(){
+  initAreaTabs('areaTabsScen',()=>{renderScenRows();});
+  initScenTypeTabs();
+  renderScenRows();
+}
+
+function renderScenRows(){
+  const st=SCENARIO_TYPES[currentScenType];
+  document.getElementById('scenDesc').textContent=st.desc;
+  const rows=areaData[currentArea].scenarios?.[currentScenType]||[];
+  const names=getSegNames();
+  const[top,mid,dev]=getSegs();
+  const container=document.getElementById('scenRows');
+  container.innerHTML=rows.map((r,ri)=>`
+    <div class="scen-row" id="srow_${ri}">
+      <div class="scen-label">
+        <input type="text" value="${r.label}" style="border:none;background:transparent;font-size:13px;font-weight:500;width:100%;outline:none;color:var(--text)" onchange="areaData[currentArea].scenarios['${currentScenType}'][${ri}].label=this.value">
+        <button onclick="removeScenRow(${ri})" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;margin-top:2px">✕ eliminar</button>
+      </div>
+      ${r.pts.map((p,si)=>`<div class="scen-seg scen-seg-${si}">
+        <div class="ss-pts" style="color:${SEG_COLORS[si]}">${fmt(p)}</div>
+        <input type="number" value="${p}" min="0" step="100" style="width:80px;text-align:center;margin-top:4px" onchange="areaData[currentArea].scenarios['${currentScenType}'][${ri}].pts[${si}]=parseInt(this.value)||0;calcScen()">
+        <div class="ss-lbl">${names[si]}</div>
+      </div>`).join('')}
+      <div class="scen-total">${fmt(r.pts[0]*top+r.pts[1]*mid+r.pts[2]*dev)}</div>
+    </div>`).join('');
+  calcScen();
+}
+
+function addScenRow(){
+  if(!areaData[currentArea].scenarios) areaData[currentArea].scenarios={};
+  if(!areaData[currentArea].scenarios[currentScenType]) areaData[currentArea].scenarios[currentScenType]=[];
+  areaData[currentArea].scenarios[currentScenType].push({label:'Nueva actividad',pts:[1000,500,200]});
+  renderScenRows();
+}
+
+function removeScenRow(ri){
+  areaData[currentArea].scenarios[currentScenType].splice(ri,1);
+  renderScenRows();
+}
+
+function calcScen(){
+  const rows=areaData[currentArea].scenarios?.[currentScenType]||[];
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  let grand=0;const segT=[0,0,0];
+  rows.forEach(r=>{r.pts.forEach((p,si)=>{const c=p*segs[si];grand+=c;segT[si]+=c;});});
+  document.getElementById('scenHeroNum').textContent=fmt(grand)+' pts';
+  const names=getSegNames();
+  document.getElementById('scenHeroBreak').innerHTML=`<div style="font-size:11px;opacity:.7;margin-bottom:4px;font-weight:600">POR SEGMENTO</div>
+    <div>🔴 ${names[0]}: ${fmt(segT[0])} pts</div><div>🟢 ${names[1]}: ${fmt(segT[1])} pts</div><div>🟡 ${names[2]}: ${fmt(segT[2])} pts</div>`;
+  document.getElementById('scenSummCards').innerHTML=segs.map((cnt,si)=>`
+    <div class="met"><div class="met-l" style="color:${SEG_COLORS[si]}">● ${names[si]} (${fmt(cnt)})</div>
+    <div class="met-v">${fmt(cnt>0?segT[si]/cnt:0)} pts</div><div class="met-s">promedio/persona</div></div>`).join('');
 }
 
 // ─── BUDGET ───────────────────────────────────────────────────────────────────
@@ -743,263 +606,154 @@ function renderBudget(){
   const prog=document.getElementById('cfgName')?.value||'';
   const ptVal=parseFloat(document.getElementById('cfgPtVal')?.value)||1;
   const moneda=document.getElementById('cfgMoneda')?.value||'ARS';
-  const[top,mid,dev]=getSegs();
-  const segs=[top,mid,dev];
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
   const names=getSegNames();
   const today=new Date().toLocaleDateString('es-AR',{year:'numeric',month:'long',day:'numeric'});
-
-  document.getElementById('bTitle').textContent=prog||'Presupuesto mensual de puntos';
-  document.getElementById('bMeta').textContent=`${org} · Generado el ${today}`;
-
-  let grandTotal=0;
-  const areaResults=[];
-
-  AREAS.forEach(area=>{
-    const metas=areaData[area.id].metas;
-    const activeMetas=metas.filter(m=>m.on);
-    if(!activeMetas.length) return;
-    let areaTotal=0;
-    const rows=activeMetas.map((meta,mi)=>{
-      let metaTotal=0;
-      const segBreak=meta.segs.map((seg,si)=>{
-        const pts=seg.pts;
-        const contrib=pts*segs[si];
-        metaTotal+=contrib;
-        return`<span class="pill ${['pill-b','pill-g','pill-a'][si]}">${names[si]}: ${fmt(contrib)}</span>`;
-      }).join(' ');
-      areaTotal+=metaTotal;
-      return{label:meta.label,segBreak,total:metaTotal};
-    });
-    grandTotal+=areaTotal;
-    areaResults.push({area,rows,areaTotal});
-  });
-
-  // Current area shown always — but we build for all with data
-  const metas=areaData[currentArea].metas;
-  const activeMetas=metas.filter(m=>m.on);
+  document.getElementById('bTitle').textContent=prog||'Presupuesto mensual';
+  document.getElementById('bMeta').textContent=`${org} · ${today}`;
+  const metas=areaData[currentArea].metas.filter(m=>m.on);
   let curTotal=0;
-  const curRows=activeMetas.map((meta,mi)=>{
-    let metaTotal=0;
-    const segBreak=meta.segs.map((seg,si)=>{
-      const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||seg.pts;
-      const contrib=pts*segs[si];
-      metaTotal+=contrib;
-      return`<span class="pill ${['pill-b','pill-g','pill-a'][si]}">${names[si]}: ${fmt(contrib)}</span>`;
-    }).join(' ');
-    curTotal+=metaTotal;
-    return{label:meta.label,segBreak,total:metaTotal};
+  const curRows=metas.map(meta=>{
+    let mt=0;
+    const segBreak=meta.segs.map((seg,si)=>{const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||seg.pts;const c=pts*segs[si];mt+=c;
+      return`<span class="pill ${['pill-r','pill-g','pill-a'][si]}">${names[si]}: ${fmt(c)}</span>`;}).join(' ');
+    curTotal+=mt;return{label:meta.label,segBreak,total:mt,segs:meta.segs};
   });
-
+  const segTotals=segs.map((cnt,si)=>curRows.reduce((a,r)=>a+(parseInt(document.getElementById(`pts_${metas[curRows.indexOf(r)]?.id}_${si}`)?.value)||metas[curRows.indexOf(r)]?.segs[si].pts||0)*cnt,0));
   const curArea=AREAS.find(a=>a.id===currentArea);
-  const html=`
-    <div class="notice">✅ Este presupuesto refleja la configuración actual: <strong>${fmt(getTotal())} personas</strong> · ${getTopPct()}% Top / ${getMidPct()}% Medio / ${getDevPct()}% En desarrollo</div>
-    <div class="grand-total-box">
-      <div class="gt-left">
-        <div class="gt-label">Total mensual (área activa: ${curArea?.label})</div>
-        <div class="gt-num">${fmt(curTotal)} pts</div>
-      </div>
-      <div class="gt-right">
-        <div>Equivalente en ${moneda}</div>
-        <div style="font-size:22px;font-weight:500">${moneda} ${fmt(curTotal*ptVal)}</div>
-        <div style="margin-top:4px">Valor por punto: ${ptVal} ${moneda}</div>
-      </div>
+  document.getElementById('budgetContent').innerHTML=`
+    <div class="grand-box">
+      <div><div class="gt-label">Total mensual · ${curArea?.label}</div><div class="gt-num">${fmt(curTotal)} pts</div></div>
+      <div class="gt-right"><div>En ${moneda}</div><div style="font-size:22px;font-weight:700">${moneda} ${fmt(curTotal*ptVal)}</div><div>Valor: ${ptVal} ${moneda}/pto</div></div>
     </div>
-
     <div class="bcard">
-      <div class="bcard-head">
-        <div class="bh-title">📋 ${curArea?.label} — Detalle por meta</div>
-        <div class="bh-total">${fmt(curTotal)} pts</div>
-      </div>
-      <div class="bcard-body">
-        ${curRows.map(r=>`
-          <div class="bcard-row">
-            <div class="br-label">${r.label}</div>
-            <div class="br-segs">${r.segBreak}</div>
-            <div class="br-total">${fmt(r.total)} pts</div>
-          </div>
-        `).join('')}
-      </div>
-      <div class="bcard-footer">
-        <div class="bf-label">Total mensual</div>
-        <div class="bf-total">${fmt(curTotal)} pts · ${moneda} ${fmt(curTotal*ptVal)}</div>
-      </div>
+      <div class="bcard-head"><div class="bh-title">Detalle por meta</div><div class="bh-total">${fmt(curTotal)} pts</div></div>
+      <div class="bcard-body">${curRows.map(r=>`<div class="bcard-row"><div>${r.label}</div><div class="br-segs">${r.segBreak}</div><div class="br-total">${fmt(r.total)} pts</div></div>`).join('')}</div>
+      <div class="bcard-footer"><div class="bf-label">Total mensual</div><div class="bf-total">${fmt(curTotal)} pts · ${moneda} ${fmt(curTotal*ptVal)}</div></div>
     </div>
-
     <div class="card">
       <div class="ctitle">Desglose por segmento</div>
-      <table>
-        <thead><tr><th>Segmento</th><th>Personas</th><th>Pts/persona (promedio)</th><th>Total segmento</th><th>Costo ${moneda}</th></tr></thead>
-        <tbody>${[top,mid,dev].map((count,si)=>{
-          const segTotal=curRows.reduce((acc,r)=>{
-            const meta=activeMetas[curRows.indexOf(r)];
-            const pts=meta?parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||meta.segs[si].pts:0;
-            return acc+(pts*count);
-          },0);
-          return`<tr>
-            <td><span class="dot" style="background:${SEG_COLORS[si]};display:inline-block;margin-right:6px"></span>${names[si]}</td>
-            <td>${fmt(count)}</td>
-            <td>${fmt(count>0?segTotal/count:0)}</td>
-            <td><strong>${fmt(segTotal)} pts</strong></td>
-            <td>${moneda} ${fmt(segTotal*ptVal)}</td>
-          </tr>`;
-        }).join('')}</tbody>
-      </table>
+      <table><thead><tr><th>Segmento</th><th>Personas</th><th>Pts/persona</th><th>Total</th><th>${moneda}</th></tr></thead>
+      <tbody>${segs.map((cnt,si)=>`<tr><td><span class="dot" style="background:${SEG_COLORS[si]};display:inline-block;margin-right:6px"></span>${names[si]}</td><td>${fmt(cnt)}</td><td>${fmt(cnt>0?segTotals[si]/cnt:0)}</td><td><strong>${fmt(segTotals[si])} pts</strong></td><td>${moneda} ${fmt(segTotals[si]*ptVal)}</td></tr>`).join('')}</tbody></table>
     </div>
-
     <div class="card" style="margin-top:.875rem">
       <div class="ctitle">Proyección anual</div>
-      <table>
-        <thead><tr><th>Período</th><th>Puntos</th><th>Costo ${moneda}</th></tr></thead>
-        <tbody>
-          <tr><td>1 mes</td><td>${fmt(curTotal)}</td><td>${moneda} ${fmt(curTotal*ptVal)}</td></tr>
-          <tr><td>3 meses</td><td>${fmt(curTotal*3)}</td><td>${moneda} ${fmt(curTotal*3*ptVal)}</td></tr>
-          <tr><td>6 meses</td><td>${fmt(curTotal*6)}</td><td>${moneda} ${fmt(curTotal*6*ptVal)}</td></tr>
-          <tr class="hilite"><td><strong>12 meses (anual)</strong></td><td><strong>${fmt(curTotal*12)}</strong></td><td><strong>${moneda} ${fmt(curTotal*12*ptVal)}</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-  `;
-  document.getElementById('budgetContent').innerHTML=html;
-}
-
-// ─── DIRTY STATE ─────────────────────────────────────────────────────────────
-let isDirty=false;
-let savedSnapshot=null;
-
-function markDirty(){
-  isDirty=true;
-  document.getElementById('saveBar').classList.add('visible');
-}
-
-function saveConfig(){
-  renderAll();
-  calc();
-  savedSnapshot=JSON.stringify(areaData);
-  isDirty=false;
-  document.getElementById('saveBar').classList.remove('visible');
-  const toast=document.getElementById('savedToast');
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2200);
-}
-
-function discardChanges(){
-  if(savedSnapshot) areaData=JSON.parse(savedSnapshot);
-  isDirty=false;
-  document.getElementById('saveBar').classList.remove('visible');
-  renderConfig();
-  renderMetas();
-  calc();
+      <table><thead><tr><th>Período</th><th>Puntos</th><th>${moneda}</th></tr></thead>
+      <tbody>
+        <tr><td>1 mes</td><td>${fmt(curTotal)}</td><td>${moneda} ${fmt(curTotal*ptVal)}</td></tr>
+        <tr><td>3 meses</td><td>${fmt(curTotal*3)}</td><td>${moneda} ${fmt(curTotal*3*ptVal)}</td></tr>
+        <tr><td>6 meses</td><td>${fmt(curTotal*6)}</td><td>${moneda} ${fmt(curTotal*6*ptVal)}</td></tr>
+        <tr class="hilite"><td><strong>12 meses</strong></td><td><strong>${fmt(curTotal*12)}</strong></td><td><strong>${moneda} ${fmt(curTotal*12*ptVal)}</strong></td></tr>
+      </tbody></table>
+    </div>`;
 }
 
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
+function markDirty(){isDirty=true;document.getElementById('saveBar').classList.add('visible');}
+function saveConfig(){
+  renderAll();calc();
+  savedSnapshot=JSON.stringify(areaData);isDirty=false;
+  document.getElementById('saveBar').classList.remove('visible');
+  const t=document.getElementById('savedToast');t.textContent='✓ Guardado';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);
+}
+function discardChanges(){
+  if(savedSnapshot)areaData=JSON.parse(savedSnapshot);isDirty=false;
+  document.getElementById('saveBar').classList.remove('visible');renderConfig();renderMetas();calc();
+}
+
 function renderConfig(){
-  const label=AREAS.find(a=>a.id===currentArea)?.label||'';
-  document.getElementById('cfgAreaLabel').textContent=label;
-
+  document.getElementById('cfgAreaLabel').textContent=AREAS.find(a=>a.id===currentArea)?.label||'';
   const cfgTabs=document.getElementById('cfgAreaTabs');
-  if(cfgTabs){
-    cfgTabs.innerHTML='';
-    AREAS.forEach(a=>{
-      const btn=document.createElement('button');
-      btn.className='area-tab'+(a.id===currentArea?' on':'');
-      btn.textContent=a.label;
-      btn.style.cssText='font-size:11px;padding:4px 10px';
-      btn.onclick=()=>{
-        currentArea=a.id;
-        document.getElementById('cfgAreaLabel').textContent=a.label;
-        cfgTabs.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));
-        btn.classList.add('on');
-        renderConfig();
-      };
-      cfgTabs.appendChild(btn);
-    });
-  }
-
-  const metas=areaData[currentArea].metas;
-  const container=document.getElementById('cfgMetas');
-  container.innerHTML='';
+  if(cfgTabs){cfgTabs.innerHTML='';AREAS.forEach(a=>{const btn=document.createElement('button');btn.className='area-tab'+(a.id===currentArea?' on':'');btn.textContent=a.label;btn.style.cssText='font-size:11px;padding:4px 10px';btn.onclick=()=>{currentArea=a.id;document.getElementById('cfgAreaLabel').textContent=a.label;cfgTabs.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderConfig();};cfgTabs.appendChild(btn);});}
+  const metas=areaData[currentArea].metas;const container=document.getElementById('cfgMetas');container.innerHTML='';
   metas.forEach((meta,mi)=>{
-    const color=META_COLORS[mi%META_COLORS.length];
-    const div=document.createElement('div');
-    div.className='card';
-    div.style.marginBottom='10px';
-    div.innerHTML=`
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem">
-        <span class="dot" style="background:${color}"></span>
-        <input type="text" value="${meta.label}" style="flex:1;font-weight:500" oninput="areaData[currentArea].metas[${mi}].label=this.value;markDirty()">
-        <button class="remove-btn" onclick="removeMeta(${mi})">✕ Eliminar</button>
-      </div>
-      ${meta.segs.map((seg,si)=>`
-        <div class="config-row" style="margin-bottom:.5rem">
-          <label style="color:${SEG_COLORS[si]};min-width:130px">● ${['Top','Medio','En desarrollo'][si]}</label>
-          <input type="text" value="${seg.name}" style="flex:1;margin-right:8px" placeholder="Descripción del tramo" oninput="areaData[currentArea].metas[${mi}].segs[${si}].name=this.value;markDirty()">
-          <input type="number" value="${seg.pts}" min="0" step="500" style="width:110px" oninput="areaData[currentArea].metas[${mi}].segs[${si}].pts=parseInt(this.value)||0;markDirty()">
-          <span style="font-size:12px;color:var(--muted);margin-left:4px;white-space:nowrap">pts</span>
-        </div>
-      `).join('')}
-    `;
+    const color=META_COLORS[mi%META_COLORS.length];const div=document.createElement('div');div.className='card';div.style.marginBottom='10px';
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem"><span class="dot" style="background:${color}"></span>
+      <input type="text" value="${meta.label}" style="flex:1;font-weight:600" oninput="areaData[currentArea].metas[${mi}].label=this.value;markDirty()">
+      <button class="remove-btn" onclick="removeMeta(${mi})">✕</button></div>
+      ${meta.segs.map((seg,si)=>`<div class="config-row" style="margin-bottom:.5rem">
+        <label style="color:${SEG_COLORS[si]};min-width:130px">● ${['Top','Medio','En desarrollo'][si]}</label>
+        <input type="text" value="${seg.name}" style="flex:1;margin-right:8px" oninput="areaData[currentArea].metas[${mi}].segs[${si}].name=this.value;markDirty()">
+        <input type="number" value="${seg.pts}" min="0" step="500" style="width:110px" oninput="areaData[currentArea].metas[${mi}].segs[${si}].pts=parseInt(this.value)||0;markDirty()">
+        <span style="font-size:12px;color:var(--muted);margin-left:4px">pts</span></div>`).join('')}`;
     container.appendChild(div);
   });
-  if(!savedSnapshot) savedSnapshot=JSON.stringify(areaData);
+  if(!savedSnapshot)savedSnapshot=JSON.stringify(areaData);
 }
 
 function addMeta(){
-  const id='m'+(Date.now());
-  areaData[currentArea].metas.push({
-    id,label:'Nueva meta',on:false,
-    segs:[
-      {name:'Top — descripción',pts:10000,ref:''},
-      {name:'Medio — descripción',pts:5000,ref:''},
-      {name:'En desarrollo — descripción',pts:2000,ref:''},
-    ]
-  });
-  markDirty();
-  renderConfig();
+  areaData[currentArea].metas.push({id:'m'+Date.now(),label:'Nueva meta',on:false,segs:[{name:'Top',pts:10000,ref:''},{name:'Medio',pts:5000,ref:''},{name:'En desarrollo',pts:2000,ref:''}]});
+  markDirty();renderConfig();
 }
-
 function removeMeta(idx){
-  if(areaData[currentArea].metas.length<=1){alert('Debe haber al menos una meta.');return;}
-  if(!confirm('¿Eliminar esta meta?')) return;
-  areaData[currentArea].metas.splice(idx,1);
-  markDirty();
-  renderConfig();
+  if(areaData[currentArea].metas.length<=1){alert('Mínimo una meta.');return;}
+  if(!confirm('¿Eliminar esta meta?'))return;
+  areaData[currentArea].metas.splice(idx,1);markDirty();renderConfig();
 }
 
-// ─── EXPORT CSV ───────────────────────────────────────────────────────────────
+// ─── CSV EXPORT ───────────────────────────────────────────────────────────────
 function exportCSV(){
-  const metas=areaData[currentArea].metas.filter(m=>m.on);
-  const[top,mid,dev]=getSegs();
-  const names=getSegNames();
+  const org=document.getElementById('cfgOrg')?.value||'';
+  const prog=document.getElementById('cfgName')?.value||'';
+  const moneda=document.getElementById('cfgMoneda')?.value||'ARS';
+  const ptVal=parseFloat(document.getElementById('cfgPtVal')?.value)||1;
+  const[top,mid,dev]=getSegs();const segs=[top,mid,dev];
+  const names=getSegNames();const area=AREAS.find(a=>a.id===currentArea)?.label||currentArea;
   const today=new Date().toLocaleDateString('es-AR');
-  let rows=[['Meta','Segmento','Personas','Puntos/persona','Total puntos','Fecha']];
+  const metas=areaData[currentArea].metas.filter(m=>m.on);
+  let rows=[];
+  // Header block
+  rows.push(['PROGRAMA','ORGANIZACIÓN','ÁREA','MONEDA','VALOR PUNTO','FECHA EXPORT']);
+  rows.push([prog,org,area,moneda,ptVal,today]);
+  rows.push([]);
+  rows.push(['DOTACIÓN TOTAL','TOP (pers.)','MEDIO (pers.)','EN DESARROLLO (pers.)','% TOP','% MEDIO','% DESARROLLO']);
+  rows.push([getTotal(),top,mid,dev,getTopPct()+'%',getMidPct()+'%',getDevPct()+'%']);
+  rows.push([]);
+  // Metas detail
+  rows.push(['META','SEGMENTO','PERSONAS','PTS/PERSONA','TOTAL PTS',`TOTAL ${moneda}`,'REFERENCIA']);
+  let grandTotal=0;
   metas.forEach(meta=>{
     meta.segs.forEach((seg,si)=>{
       const pts=parseInt(document.getElementById(`pts_${meta.id}_${si}`)?.value)||seg.pts;
-      const count=[top,mid,dev][si];
-      rows.push([meta.label,names[si],count,pts,pts*count,today]);
+      const cnt=segs[si];const total=pts*cnt;grandTotal+=total;
+      rows.push([meta.label,names[si],cnt,pts,total,fmt(total*ptVal).replace(/\./g,''),seg.ref||'']);
     });
+    rows.push(['','','','','','','']);
   });
-  const csv=rows.map(r=>r.join(',')).join('\n');
+  rows.push(['TOTAL MENSUAL','','','',grandTotal,fmt(grandTotal*ptVal).replace(/\./g,''),'']);
+  rows.push(['TOTAL 3 MESES','','','',grandTotal*3,fmt(grandTotal*3*ptVal).replace(/\./g,''),'']);
+  rows.push(['TOTAL 6 MESES','','','',grandTotal*6,fmt(grandTotal*6*ptVal).replace(/\./g,''),'']);
+  rows.push(['TOTAL ANUAL','','','',grandTotal*12,fmt(grandTotal*12*ptVal).replace(/\./g,''),'']);
+  rows.push([]);
+  // Scenarios
+  Object.entries(SCENARIO_TYPES).forEach(([key,st])=>{
+    const scenRows=areaData[currentArea].scenarios?.[key]||[];
+    if(!scenRows.length)return;
+    rows.push([`ESCENARIO: ${st.label.toUpperCase()}`,'','','','','','']);
+    rows.push(['ACTIVIDAD',names[0]+' (pts)',names[1]+' (pts)',names[2]+' (pts)','TOTAL ESTIMADO ('+getTotal()+' pers.)','','']);
+    scenRows.forEach(r=>{
+      const est=r.pts[0]*top+r.pts[1]*mid+r.pts[2]*dev;
+      rows.push([r.label,r.pts[0],r.pts[1],r.pts[2],est,'','']);
+    });
+    rows.push([]);
+  });
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download=`presupuesto_puntos_${currentArea}_${today.replace(/\//g,'-')}.csv`;
-  a.click();
+  a.download=`apprecio_incentivos_${currentArea}_${today.replace(/\//g,'-')}.csv`;a.click();
 }
 
-// ─── RENDER ALL ───────────────────────────────────────────────────────────────
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 function renderAll(){
-  initAreaTabs();
-  renderSegCounts();
-  renderMetas();
-  calc();
+  initAreaTabs('areaTabs',()=>{renderMetas();calc();});
+  renderSegCounts();renderMetas();calc();
 }
 
-// ─── LISTENERS ────────────────────────────────────────────────────────────────
 document.getElementById('sTot').addEventListener('input',e=>{document.getElementById('sTotV').textContent=e.target.value;renderSegCounts();calc();});
 document.getElementById('pTop').addEventListener('input',()=>{renderSegCounts();calc();});
 document.getElementById('pMid').addEventListener('input',()=>{renderSegCounts();calc();});
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+loadDotacion();
 renderAll();
 </script>
 </body>
