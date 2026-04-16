@@ -815,6 +815,7 @@ function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
   document.getElementById('page-'+id)?.classList.add('on');
+  window.scrollTo(0,0);
   const idx={calc:0,escenarios:1,budget:2,config:3}[id];
   if(idx!==undefined) document.querySelectorAll('.nav-tab')[idx]?.classList.add('on');
   if(id==='budget') renderBudget();
@@ -939,32 +940,55 @@ function renderMetas(){
     </div>`;
   }
 
-  const container=document.getElementById('metasContainer');container.innerHTML='';
+  const container=document.getElementById('metasContainer');
+  container.innerHTML='';
+
   const disabledHint={
-    segmentado:'Activar para ver los 3 segmentos y sus puntos',
+    segmentado:'Activar para ver los segmentos y sus puntos',
     dicotomico:'Activar para definir los puntos del grupo que califica',
     umbral:'Activar para ver los segmentos sobre el umbral',
   };
+
+  // Build all HTML as one string and inject, then attach listeners by ID
+  const META_COLORS_LOCAL=['#FA345E','#065F46','#f59e0b','#8b5cf6','#06b6d4','#ec4899','#ef4444','#3b82f6'];
+  let containerHTML = '';
   metas.forEach((meta,mi)=>{
     const color=META_COLORS[mi%META_COLORS.length];
-    const div=document.createElement('div');div.className='meta-block';
-    const header=document.createElement('div');header.className='meta-header';
-    header.innerHTML=`<div class="meta-title"><span class="dot" style="background:${color}"></span>${meta.label}${meta.flujo?'<span class="flujo-badge">💰 basado en flujo</span>':''}</div>
-      <label class="tog"><input type="checkbox" id="tog_${meta.id}" ${meta.on?'checked':''}><span class="tslider"></span></label>`;
-    div.appendChild(header);
-    const body=document.createElement('div');body.id='mbody_'+meta.id;
-    body.innerHTML=meta.on
+    const isOn = meta.on;
+    const bodyHTML = isOn
       ? renderMetaBody(meta,names)
-      : `<div class="meta-disabled-mode">💤 ${disabledHint[currentMode]||'Desactivada — activar para incluir'}</div>`;
-    div.appendChild(body);
-    if(mi<metas.length-1){const d=document.createElement('div');d.className='divider';div.appendChild(d);}
-    container.appendChild(div);
-    header.querySelector('input[type=checkbox]').addEventListener('change',function(){
-      meta.on=this.checked;
-      body.innerHTML=meta.on
-        ? renderMetaBody(meta,getSegNames())
-        : `<div class="meta-disabled-mode">💤 ${disabledHint[currentMode]||'Desactivada — activar para incluir'}</div>`;
+      : `<div class="meta-disabled-mode">💤 ${disabledHint[currentMode]||'Desactivada'}</div>`;
+    const divider = mi < metas.length-1 ? '<div class="divider"></div>' : '';
+    containerHTML += `
+      <div class="meta-block">
+        <div class="meta-header">
+          <div class="meta-title">
+            <span class="dot" style="background:${color}"></span>
+            ${meta.label}${meta.flujo?'<span class="flujo-badge">💰 flujo</span>':''}
+          </div>
+          <label class="tog">
+            <input type="checkbox" id="tog_${meta.id}" ${isOn?'checked':''}>
+            <span class="tslider"></span>
+          </label>
+        </div>
+        <div id="mbody_${meta.id}">${bodyHTML}</div>
+        ${divider}
+      </div>`;
+  });
+  container.innerHTML = containerHTML;
+
+  // Attach toggle listeners AFTER innerHTML is set (elements exist in DOM)
+  metas.forEach((meta)=>{
+    const tog = document.getElementById('tog_'+meta.id);
+    if(!tog) return;
+    tog.addEventListener('change', function(){
+      meta.on = this.checked;
+      const body = document.getElementById('mbody_'+meta.id);
+      if(body) body.innerHTML = meta.on
+        ? renderMetaBody(meta, getSegNames())
+        : `<div class="meta-disabled-mode">💤 ${disabledHint[currentMode]||'Desactivada'}</div>`;
       calc();
+      if(typeof saveSession==='function') saveSession();
     });
   });
 }
